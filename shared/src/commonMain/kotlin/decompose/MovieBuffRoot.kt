@@ -9,7 +9,7 @@ interface MovieBuffRoot {
 
     sealed class Child{
 
-        data class MainScreen(val s:String) : Child()
+        data class MainScreen(val mainScreenComponent: MainScreenComponent) : Child()
 
         data class DetailScreen(val s:String) : Child()
     }

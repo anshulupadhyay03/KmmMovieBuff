@@ -9,13 +9,16 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
 class MovieBuffRootImpl(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    private val mainScreen : (ComponentContext) -> MainScreenComponent
     ) : MovieBuffRoot , ComponentContext by componentContext {
-
-
 
     constructor(
         componentContext: ComponentContext
+    ):this(componentContext ,
+        mainScreen = {childContext ->
+            MainScreenComponentImpl(childContext)
+        }
     )
 
     private val navigation = StackNavigation<Configuration>()
@@ -32,7 +35,9 @@ class MovieBuffRootImpl(
         componentContext: ComponentContext
     ): MovieBuffRoot.Child =
         when(configuration){
-            Configuration.Dashboard -> MovieBuffRoot.Child.MainScreen("")
+            Configuration.Dashboard -> MovieBuffRoot.Child.MainScreen(
+                mainScreen(componentContext)
+            )
 
             is Configuration.Details -> MovieBuffRoot.Child.DetailScreen("")
         }

@@ -3,8 +3,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -12,19 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import data.MovieApiService
-import data.PopularMoviesDataRepository
+import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.single
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import style.MovieBuffTheme
 import ui.features.MovieList
-import util.getDispatcherProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App() {
+fun App(root: MovieBuffRoot) {
 
 
     MovieBuffTheme {
@@ -41,7 +36,7 @@ fun App() {
                     }
                 }
             ) {
-                AppScaffoldContent {
+                AppScaffoldContent(root) {
                     scope.launch {
                         drawerState.open()
                     }
@@ -73,7 +68,7 @@ fun AppDrawer() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScaffoldContent(onHamburgerClicked: () -> Unit) {
+fun AppScaffoldContent(root: MovieBuffRoot, onHamburgerClicked: () -> Unit) {
 
     var bottomBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
     val topBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
@@ -91,21 +86,6 @@ fun AppScaffoldContent(onHamburgerClicked: () -> Unit) {
             MovieList()
         }
     }
-
-
-    /*val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val route = navBackStackEntry?.destination?.route
-    println("my route $route")
-    when (route) {
-        "details/{movieId}" -> {
-            topBarVisibilityState = false
-            bottomBarVisibilityState = false
-        }
-        else -> {
-            topBarVisibilityState = true
-            bottomBarVisibilityState = true
-        }
-    }*/
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
@@ -133,11 +113,6 @@ fun SetupTopBar(
                     )
                 }
             },
-            /*actions = {
-                ShowSortDialog()
-            }*//*actions = {
-                ShowSortDialog()
-            }*/
         )
     }
 }

@@ -59,7 +59,7 @@ kotlin {
                 implementation(libs.ktor.client.serialization.json)
                 implementation(libs.ktor.client.logging)
 
-                implementation(libs.arkivanov.decompose)
+                api(libs.arkivanov.decompose)
 
 
             }
