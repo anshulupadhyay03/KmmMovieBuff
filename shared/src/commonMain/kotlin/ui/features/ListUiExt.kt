@@ -17,7 +17,7 @@ fun LazyListState.OnBottomReached(
     }
 
     LaunchedEffect(shouldLoadMore) {
-        println("should Load More: $shouldLoadMore")
+        println("should Load More: ${shouldLoadMore.value}")
         snapshotFlow { shouldLoadMore.value }
             .collect {
                 if (it) loadMore()
