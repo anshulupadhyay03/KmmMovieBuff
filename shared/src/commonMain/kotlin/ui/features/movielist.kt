@@ -11,6 +11,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import data.MovieApiService
 import data.PopularMoviesDataRepository
+import decompose.MainScreenComponent
+import domain.MovieListScreenState
 import domain.MovieResult
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
@@ -37,34 +40,27 @@ import util.getDispatcherProvider
 var pageNo = 1
 
 @Composable
-fun MovieList() {
-    val repo = PopularMoviesDataRepository(
-        MovieApiService(),
-        getDispatcherProvider()
-    )
-
-    val data = remember { mutableStateListOf<MovieResult>() }
-    loadData(repo, data)
-
-
-    LazyColumn(
-        modifier = Modifier
-            .padding(5.dp)
-            .background(Color.LightGray),
-        state = rememberLazyListState().apply {
-            OnBottomReached {
-                println("Bottom Reached")
-                loadData(repo, data)
+fun MovieList(mainScreenComponent: MainScreenComponent) {
+    val state = mainScreenComponent.viewModel.state.collectAsState()
+    if(state.value is MovieListScreenState.Success){
+        LazyColumn(
+            modifier = Modifier
+                .padding(5.dp)
+                .background(Color.LightGray),
+            state = rememberLazyListState().apply {
+                OnBottomReached {
+                    mainScreenComponent.viewModel.loadMore()
+                }
+            }
+        ) {
+            val results = (state.value as MovieListScreenState.Success).getResults()
+            items(results) {
+                MovieRow(it) {
+                }
             }
         }
-    ) {
-        items(data) {
-            MovieRow(it) {
-            }
-        }
-
-        //println("index : ${lazyState.firstVisibleItemIndex} and off:${lazyState.firstVisibleItemScrollOffset}")
     }
+
 }
 
 private fun loadData(

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -83,7 +84,18 @@ fun AppScaffoldContent(root: MovieBuffRoot, onHamburgerClicked: () -> Unit) {
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            MovieList()
+            Children(root.childStack){
+                when(val child = it.instance){
+                    is MovieBuffRoot.Child.MainScreen ->{
+                        MovieList(child.mainScreenComponent)
+                    }
+
+                    is MovieBuffRoot.Child.DetailScreen ->{
+
+                    }
+                }
+            }
+
         }
     }
 }

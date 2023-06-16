@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00B979042A3B46A000B09CB1 /* LifeCycleHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B979032A3B46A000B09CB1 /* LifeCycleHolder.swift */; };
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00B979032A3B46A000B09CB1 /* LifeCycleHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeCycleHolder.swift; sourceTree = "<group>"; };
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				00B979032A3B46A000B09CB1 /* LifeCycleHolder.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 			files = (
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
+				00B979042A3B46A000B09CB1 /* LifeCycleHolder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

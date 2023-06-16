@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     kotlin("plugin.serialization").version("1.8.20")
+    id("kotlin-parcelize")
 }
 
 kotlin {
@@ -13,8 +14,6 @@ kotlin {
                 jvmTarget = "1.8"
             }
         }
-
-
     }
     iosX64()
     iosArm64()
@@ -29,6 +28,8 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic=true
+            export(libs.arkivanov.decompose)
+            transitiveExport = true
         }
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
@@ -59,8 +60,9 @@ kotlin {
                 implementation(libs.ktor.client.serialization.json)
                 implementation(libs.ktor.client.logging)
 
+                //di,navigation,lifecycle
                 api(libs.arkivanov.decompose)
-
+                implementation(libs.arkivanov.jetbrains.uiext)
 
             }
         }

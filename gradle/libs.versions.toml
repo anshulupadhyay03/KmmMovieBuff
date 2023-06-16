@@ -1,17 +1,15 @@
 [versions]
 kotlin = "1.8.20"
 ksp = "1.8.20-1.0.10"
-atomicfu = "0.20.2"
 coroutines = "1.6.4"
-mutekt = "1.0.1"
 ktor = "2.3.0"
-coil = "2.3.0"
 activity = "1.6.1"
 appcompat = "1.6.1"
 core = "1.9.0"
-spotless = "6.18.0"
 imageLoading = "0.5.1"
-decompose = "2.0.0-beta-01"
+decompose = "2.0.0-compose-experimental-beta-01"
+essentyLifecycle = "1.1.0"
+
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
@@ -32,6 +30,7 @@ ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-
 ktor-client-logging = { module = "io.ktor:ktor-client-logging" , version.ref = "ktor"}
 
 arkivanov-decompose = {module = "com.arkivanov.decompose:decompose" , version.ref = "decompose"}
+arkivanov-jetbrains-uiext = {module = "com.arkivanov.decompose:extensions-compose-jetbrains" , version.ref = "decompose"}
+#arkinov-essenty-lifecycle-ios = {module = "com.arkivanov.essenty:lifecycle" , version.ref = "essentyLifecycle"}
 
 [plugins]
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

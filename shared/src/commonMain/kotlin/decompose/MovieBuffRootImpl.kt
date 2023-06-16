@@ -48,8 +48,7 @@ class MovieBuffRootImpl(
 
     private fun value() = stack
 
-    private sealed class Configuration :Parcelable {
-
+    private sealed class Configuration : Parcelable {
         @Parcelize
         object Dashboard : Configuration()
 
