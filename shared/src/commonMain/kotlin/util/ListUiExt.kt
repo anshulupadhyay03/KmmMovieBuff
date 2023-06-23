@@ -1,4 +1,4 @@
-package ui.features
+package util
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*

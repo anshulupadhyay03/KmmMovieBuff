@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import style.LightGreen
+import style.*
 
 
 /*@Composable
@@ -69,15 +69,29 @@ fun DisplayMovies(data: LazyPagingItems<MovieResult>, onItemClick: (id: Int) -> 
     }
 }*/
 
+enum class RatingBarColors(val highlightColor: Color, val surfaceColor: Color) {
+    GREEN(Green, LightGreen),
+    YELLOW(Yellow, LightYellow);
+}
+
+private fun getRatingBarColors(voteAverage: Double): RatingBarColors {
+    return when {
+        (voteAverage * 10).toInt() > 70 -> {
+            RatingBarColors.GREEN
+        }
+        else -> RatingBarColors.YELLOW
+    }
+}
 
 @Composable
 fun AddVoteProgressBar(voteAverage: Double) {
+    val ratingBarColors = getRatingBarColors(voteAverage)
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier
             .background(Color.Black, shape = CircleShape)
             .padding(1.dp)
-            .border(3.dp, LightGreen, CircleShape)
-            .layout() { measurable, constraints ->
+            .border(3.dp, ratingBarColors.surfaceColor, CircleShape)
+            .layout{ measurable, constraints ->
                 // Measure the composable
                 val placeable = measurable.measure(constraints)
 
@@ -96,7 +110,7 @@ fun AddVoteProgressBar(voteAverage: Double) {
 
             }) {
         CircularProgressIndicator(
-            progress = voteAverage.toFloat() / 10, color = Color.Green,
+            progress = voteAverage.toFloat() / 10, color = ratingBarColors.highlightColor,
         )
 
         Text(
@@ -179,7 +193,8 @@ fun ChipVerticalGrid(
 
             if (currentOrigin.x > 0f && currentOrigin.x + placeable.width > constraints.maxWidth) {
                 currentRow += 1
-                currentOrigin = currentOrigin.copy(x = 0, y = currentOrigin.y + placeable.height + spacingValue)
+                currentOrigin =
+                    currentOrigin.copy(x = 0, y = currentOrigin.y + placeable.height + spacingValue)
             }
 
             placeable to currentOrigin.also {

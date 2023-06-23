@@ -7,8 +7,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import decompose.MovieBuffRoot
 
 @Composable
-fun mainView(root: MovieBuffRoot) = CompositionLocalProvider(){
-    MaterialTheme {
-        App(root)
-    }
+fun mainView(root: MovieBuffRoot) = CompositionLocalProvider() {
+    App(root)
 }

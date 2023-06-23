@@ -11,18 +11,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.router.stack.active
+import decompose.DetailsScreenComponent
 import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import style.MovieBuffTheme
+import ui.features.MovieDetailsScreen
 import ui.features.MovieList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(root: MovieBuffRoot) {
-
-
     MovieBuffTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -37,13 +38,26 @@ fun App(root: MovieBuffRoot) {
                     }
                 }
             ) {
-                AppScaffoldContent(root) {
-                    scope.launch {
-                        drawerState.open()
+                AppScaffoldContent(
+                    root,
+                    onHamburgerClicked = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    },
+                    onBackPressed = {
+                        backPressed(root)
                     }
-                }
+                )
             }
         }
+    }
+}
+
+private fun backPressed(root: MovieBuffRoot) {
+    print("onBackPressed :${root.childStack.active.instance}")
+    if (root.childStack.active.instance is MovieBuffRoot.Child.DetailScreen) {
+        (root.childStack.active.instance as MovieBuffRoot.Child.DetailScreen).detailsScreenComponent.onBackPressed()
     }
 }
 
@@ -69,13 +83,20 @@ fun AppDrawer() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScaffoldContent(root: MovieBuffRoot, onHamburgerClicked: () -> Unit) {
+fun AppScaffoldContent(
+    root: MovieBuffRoot,
+    onHamburgerClicked: () -> Unit,
+    onBackPressed: () -> Unit
+) {
 
+    var backArrowVisibilityState by remember { mutableStateOf(false) }
     var bottomBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
     val topBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
     Scaffold(
         topBar = {
-            SetupTopBar(onHamburgerClicked, topBarVisibilityState)
+            SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState) {
+                onBackPressed()
+            }
         },
         /*bottomBar = {
             SetupBottomBar(navController, bottomBarVisibilityState)
@@ -84,14 +105,16 @@ fun AppScaffoldContent(root: MovieBuffRoot, onHamburgerClicked: () -> Unit) {
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            Children(root.childStack){
-                when(val child = it.instance){
-                    is MovieBuffRoot.Child.MainScreen ->{
+            Children(root.childStack) {
+                when (val child = it.instance) {
+                    is MovieBuffRoot.Child.MainScreen -> {
+                        backArrowVisibilityState = false
                         MovieList(child.mainScreenComponent)
                     }
 
-                    is MovieBuffRoot.Child.DetailScreen ->{
-
+                    is MovieBuffRoot.Child.DetailScreen -> {
+                        backArrowVisibilityState = true
+                        MovieDetailsScreen(child.detailsScreenComponent)
                     }
                 }
             }
@@ -104,7 +127,9 @@ fun AppScaffoldContent(root: MovieBuffRoot, onHamburgerClicked: () -> Unit) {
 @Composable
 fun SetupTopBar(
     onHamburgerClicked: () -> Unit,
-    topBarVisibilityState: Boolean
+    topBarVisibilityState: Boolean,
+    backArrowVisibilityState: Boolean,
+    onBackPressed: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     AnimatedVisibility(
@@ -115,16 +140,39 @@ fun SetupTopBar(
         TopAppBar(
             title = { Text(text = "Movie Buff"/*stringResource(id = R.string.app_name)*/) },
             navigationIcon = {
-                IconButton(
-                    onClick = {
-                        onHamburgerClicked()
-                    }) {
-                    Icon(
-                        painterResource("menu_top_icon.xml"),
-                        contentDescription = null
-                    )
-                }
-            },
+                if (backArrowVisibilityState) ShowBackArrow(onBackPressed) else ShowHamburgerIcon(
+                    onHamburgerClicked
+                )
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun ShowHamburgerIcon(onHamburgerClicked: () -> Unit) {
+    IconButton(
+        onClick = {
+            onHamburgerClicked()
+        }) {
+        Icon(
+            painterResource("menu_top_icon.xml"),
+            contentDescription = null
+        )
+    }
+}
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun ShowBackArrow(onBackPressed: () -> Unit) {
+    IconButton(
+        onClick = {
+            println("back button clicked")
+            onBackPressed.invoke()
+        }) {
+        Icon(
+            painterResource("arrow_back.xml"),
+            contentDescription = null
         )
     }
 }

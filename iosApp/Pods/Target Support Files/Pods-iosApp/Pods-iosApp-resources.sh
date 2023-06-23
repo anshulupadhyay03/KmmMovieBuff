@@ -97,10 +97,14 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "${PODS_ROOT}/../../shared/src/commonMain/resources/arrow_back.xml"
   install_resource "${PODS_ROOT}/../../shared/src/commonMain/resources/menu_top_icon.xml"
+  install_resource "${PODS_ROOT}/../../shared/src/commonMain/resources/star.png"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "${PODS_ROOT}/../../shared/src/commonMain/resources/arrow_back.xml"
   install_resource "${PODS_ROOT}/../../shared/src/commonMain/resources/menu_top_icon.xml"
+  install_resource "${PODS_ROOT}/../../shared/src/commonMain/resources/star.png"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

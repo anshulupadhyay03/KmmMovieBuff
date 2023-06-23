@@ -8,15 +8,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,19 +21,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import data.MovieApiService
-import data.PopularMoviesDataRepository
 import decompose.MainScreenComponent
 import domain.MovieListScreenState
 import domain.MovieResult
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import io.ktor.http.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.launch
-import util.getDispatcherProvider
+import util.OnBottomReached
 
 @Composable
 fun MovieList(mainScreenComponent: MainScreenComponent) {
@@ -54,16 +44,17 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
         }
     ) {
         when (state.value) {
-            MovieListScreenState.Loading -> {
-                item {
-                   CircularProgressIndicator()
-                }
-            }
             MovieListScreenState.Success -> {
                 val results = (state.value as MovieListScreenState.Success).getResults()
                 items(results) {
-                    MovieRow(it) {
+                    MovieRow(it) {movieId ->
+                        mainScreenComponent.viewModel.onItemClicked(movieId)
                     }
+                }
+            }
+            MovieListScreenState.Loading -> {
+                item {
+                   LoadingItem()
                 }
             }
         }
@@ -74,7 +65,6 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
-    //println("title : ${item.title}")
     Box(modifier = Modifier.padding(5.dp)) {
         ElevatedCard(
             modifier = Modifier

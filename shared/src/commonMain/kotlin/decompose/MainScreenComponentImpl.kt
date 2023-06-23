@@ -9,14 +9,15 @@ import util.getDispatcherProvider
 
 class MainScreenComponentImpl(
     componentContext: ComponentContext,
-) : MainScreenComponent , ComponentContext by componentContext{
+    private val onMovieSelected: (movieId: Int) -> Unit
+) : MainScreenComponent, ComponentContext by componentContext {
 
-    private val repository =  PopularMoviesDataRepository(MovieApiService(), getDispatcherProvider())
+    private val repository = PopularMoviesDataRepository(MovieApiService(), getDispatcherProvider())
 
     override val viewModel: MovieListViewModel
-        get() = instanceKeeper.getOrCreate { MovieListViewModel(repository) }
-
-    override fun onMovieSelected(id: String) {
-        TODO("Not yet implemented")
-    }
+        get() = instanceKeeper.getOrCreate {
+            MovieListViewModel(repository) { id ->
+                onMovieSelected(id)
+            }
+        }
 }

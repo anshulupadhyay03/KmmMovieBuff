@@ -70,3 +70,6 @@ val seed = Color(0xFF8341A3)
 
 val Green = Color(0xFF228B22)
 val LightGreen = Green.copy(alpha = 0.7f)
+
+val Yellow = Color(0xFFF2BE22)
+val LightYellow = Yellow.copy(alpha = 0.7f)

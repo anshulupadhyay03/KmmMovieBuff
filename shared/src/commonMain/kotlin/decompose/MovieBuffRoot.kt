@@ -11,6 +11,6 @@ interface MovieBuffRoot {
 
         data class MainScreen(val mainScreenComponent: MainScreenComponent) : Child()
 
-        data class DetailScreen(val s:String) : Child()
+        data class DetailScreen(val detailsScreenComponent: DetailsScreenComponent) : Child()
     }
 }

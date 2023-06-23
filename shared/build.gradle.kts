@@ -43,6 +43,7 @@ kotlin {
                 implementation(compose.ui)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation ("io.github.oleksandrbalan:textflow:1.1.0")
 
 
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0") {
@@ -63,6 +64,11 @@ kotlin {
                 //di,navigation,lifecycle
                 api(libs.arkivanov.decompose)
                 implementation(libs.arkivanov.jetbrains.uiext)
+
+                //kotlin date&time
+                implementation(libs.kotlinx.datetime)
+
+
 
             }
         }
