@@ -157,7 +157,7 @@ fun ShowKeyWords(keywords: List<String>) {
                 text = word,
                 color = Color.White,
                 modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.onBackground, shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.primaryContainer, shape = CircleShape)
                     .padding(vertical = 2.dp, horizontal = 5.dp)
             )
         }

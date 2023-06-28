@@ -12,7 +12,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import decompose.MainScreenComponent
-import domain.MovieListScreenState
+import domain.ListState
 import domain.MovieResult
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
@@ -31,8 +30,7 @@ import util.OnBottomReached
 
 @Composable
 fun MovieList(mainScreenComponent: MainScreenComponent) {
-    val state = mainScreenComponent.viewModel.state.collectAsState()
-
+    val movieList = mainScreenComponent.viewModel.movieLists
     LazyColumn(
         modifier = Modifier
             .padding(5.dp)
@@ -43,22 +41,29 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
             }
         }
     ) {
-        when (state.value) {
-            MovieListScreenState.Success -> {
-                val results = (state.value as MovieListScreenState.Success).getResults()
-                items(results) {
-                    MovieRow(it) {movieId ->
-                        mainScreenComponent.viewModel.onItemClicked(movieId)
-                    }
-                }
-            }
-            MovieListScreenState.Loading -> {
-                item {
-                   LoadingItem()
-                }
+
+        items(movieList, key = {it.id}) {
+            MovieRow(it) {movieId ->
+                mainScreenComponent.viewModel.onItemClicked(movieId)
             }
         }
 
+        item(
+            key = mainScreenComponent.viewModel.listState
+        ){
+            when(mainScreenComponent.viewModel.listState){
+                ListState.LOADING ->{
+                    LoadingItem()
+                }
+
+                ListState.PAGINATING -> {
+                    LoadingItem()
+                }
+                else ->{
+                    
+                }
+            }
+        }
     }
 }
 
