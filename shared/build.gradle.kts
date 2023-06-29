@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.compose")
     kotlin("plugin.serialization").version("1.8.20")
     id("kotlin-parcelize")
-    id("com.codingfeline.buildkonfig") version "+"
+    //id("com.codingfeline.buildkonfig") version "+"
 }
 
 kotlin {
