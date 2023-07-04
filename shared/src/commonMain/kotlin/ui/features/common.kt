@@ -21,7 +21,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import style.*
+import style.Green
+import style.LightGreen
+import style.LightYellow
+import style.Yellow
 
 
 /*@Composable

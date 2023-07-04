@@ -155,9 +155,10 @@ fun ShowKeyWords(keywords: List<String>) {
             Text(
                 fontSize = 8.sp,
                 text = word,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.primaryContainer, shape = CircleShape)
+                    .border(1.dp, color = MaterialTheme.colorScheme.outline, shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
                     .padding(vertical = 2.dp, horizontal = 5.dp)
             )
         }
@@ -169,10 +170,10 @@ fun ShowMovieDetails(movieDetailsModel: MovieDetailsModel) {
     ShowImages(movieDetailsModel)
     ShowOverview(movieDetailsModel.overview, movieDetailsModel.vote)
     ShowMovieInfo(movieDetailsModel.movieInfo)
+    ShowKeyWords(movieDetailsModel.keywords)
     if (movieDetailsModel.reviews.isNotEmpty()) {
         ShowReviews(movieDetailsModel.reviews)
     }
-    ShowKeyWords(movieDetailsModel.keywords)
     ShowCasts(movieDetailsModel.topCast)
     ShowPostersAndBackDrops(movieDetailsModel.posters, movieDetailsModel.backdrops)
     //ShowVideos(movieDetailsModel.videos)
@@ -348,13 +349,13 @@ fun ShowReviewCards(review: MovieReview) {
                     Row(
                         modifier = Modifier
                             .padding(start = 7.dp)
-                            .background(Color.Blue, RoundedCornerShape(10.dp))
+                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(10.dp))
                             .padding(2.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = review.rating.toString(),
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onSecondary,
                             fontSize = 12.sp
                         )
                         Image(
@@ -439,6 +440,7 @@ private fun ShowOverview(overview: String, vote: Double) {
 
     Text(
         text = annotatedString,
+        color = MaterialTheme.colorScheme.onBackground,
         inlineContent = inlineContentMap,
         modifier = Modifier
             .fillMaxWidth()
