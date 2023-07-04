@@ -1,24 +1,17 @@
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.router.stack.active
-import decompose.DetailsScreenComponent
+import com.seiko.imageloader.ImageLoader
+import com.seiko.imageloader.LocalImageLoader
 import decompose.MovieBuffRoot
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 import kotlinx.coroutines.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -27,35 +20,41 @@ import ui.features.DrawerOptions
 import ui.features.MovieDetailsScreen
 import ui.features.MovieList
 import ui.features.UserImageArea
+import util.generateImageLoader
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(root: MovieBuffRoot) {
-    MovieBuffTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-            val scope = rememberCoroutineScope()
-            ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    ModalDrawerSheet {
-                        AppDrawer()
-                    }
-                }
+    CompositionLocalProvider(
+        LocalImageLoader provides generateImageLoader()
+    ) {
+        MovieBuffTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
             ) {
-                AppScaffoldContent(
-                    root,
-                    onHamburgerClicked = {
-                        scope.launch {
-                            drawerState.open()
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val scope = rememberCoroutineScope()
+                ModalNavigationDrawer(
+                    drawerState = drawerState,
+                    drawerContent = {
+                        ModalDrawerSheet {
+                            AppDrawer()
                         }
-                    },
-                    onBackPressed = {
-                        backPressed(root)
                     }
-                )
+                ) {
+                    AppScaffoldContent(
+                        root,
+                        onHamburgerClicked = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        onBackPressed = {
+                            backPressed(root)
+                        }
+                    )
+                }
             }
         }
     }

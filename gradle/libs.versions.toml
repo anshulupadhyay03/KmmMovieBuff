@@ -1,12 +1,12 @@
 [versions]
 kotlin = "1.8.20"
 ksp = "1.8.20-1.0.10"
-coroutines = "1.6.4"
+coroutines = "1.7.2"
 ktor = "2.3.0"
 activity = "1.6.1"
 appcompat = "1.6.1"
 core = "1.9.0"
-imageLoading = "0.5.1"
+imageLoading = "1.5.2"
 decompose = "2.0.0-compose-experimental-beta-01"
 essentyLifecycle = "1.1.0"
 kotlinDateTime = "0.4.0"
@@ -17,7 +17,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core" }
 
-image-loading = { module = "media.kamel:kamel-image", version.ref = "imageLoading" }
+image-loading = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoading" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }

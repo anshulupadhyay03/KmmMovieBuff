@@ -47,14 +47,10 @@ kotlin {
                 implementation ("io.github.oleksandrbalan:textflow:1.1.0")
 
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0") {
-                    version {
-                        strictly("1.7.0")
-                    }
-                }
+                implementation(libs.kotlinx.coroutines.core)
 
                 //Image downloading
-                implementation(libs.image.loading)
+                api(libs.image.loading)
 
                 // Ktor
                 implementation(libs.ktor.client.core)
