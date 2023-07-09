@@ -8,8 +8,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
-import com.arkivanov.decompose.router.stack.active
-import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.LocalImageLoader
 import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
@@ -49,21 +47,11 @@ fun App(root: MovieBuffRoot) {
                             scope.launch {
                                 drawerState.open()
                             }
-                        },
-                        onBackPressed = {
-                            backPressed(root)
                         }
                     )
                 }
             }
         }
-    }
-}
-
-private fun backPressed(root: MovieBuffRoot) {
-    print("onBackPressed :${root.childStack.active.instance}")
-    if (root.childStack.active.instance is MovieBuffRoot.Child.DetailScreen) {
-        (root.childStack.active.instance as MovieBuffRoot.Child.DetailScreen).detailsScreenComponent.onBackPressed()
     }
 }
 
@@ -82,18 +70,15 @@ fun AppDrawer() {
 @Composable
 fun AppScaffoldContent(
     root: MovieBuffRoot,
-    onHamburgerClicked: () -> Unit,
-    onBackPressed: () -> Unit
+    onHamburgerClicked: () -> Unit
 ) {
 
     var backArrowVisibilityState by remember { mutableStateOf(false) }
     var bottomBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
-    val topBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
+    var topBarVisibilityState by remember { mutableStateOf(true) }
     Scaffold(
         topBar = {
-            SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState) {
-                onBackPressed()
-            }
+            SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState)
         },
         /*bottomBar = {
             SetupBottomBar(navController, bottomBarVisibilityState)
@@ -106,11 +91,13 @@ fun AppScaffoldContent(
                 when (val child = it.instance) {
                     is MovieBuffRoot.Child.MainScreen -> {
                         backArrowVisibilityState = false
+                        topBarVisibilityState = true
                         MovieList(child.mainScreenComponent)
                     }
 
                     is MovieBuffRoot.Child.DetailScreen -> {
                         backArrowVisibilityState = true
+                        topBarVisibilityState = false
                         MovieDetailsScreen(child.detailsScreenComponent)
                     }
                 }
@@ -125,10 +112,8 @@ fun AppScaffoldContent(
 fun SetupTopBar(
     onHamburgerClicked: () -> Unit,
     topBarVisibilityState: Boolean,
-    backArrowVisibilityState: Boolean,
-    onBackPressed: () -> Unit
+    backArrowVisibilityState: Boolean
 ) {
-    val scope = rememberCoroutineScope()
     AnimatedVisibility(
         visible = topBarVisibilityState,
         enter = slideInVertically(initialOffsetY = { -it }),
@@ -137,7 +122,10 @@ fun SetupTopBar(
         TopAppBar(
             title = { Text(text = "Movie Buff"/*stringResource(id = R.string.app_name)*/) },
             navigationIcon = {
-                if (backArrowVisibilityState) ShowBackArrow(onBackPressed) else ShowHamburgerIcon(
+                /*if (backArrowVisibilityState) ShowBackArrow(onBackPressed) else ShowHamburgerIcon(
+                    onHamburgerClicked
+                )*/
+                ShowHamburgerIcon(
                     onHamburgerClicked
                 )
             }
@@ -154,21 +142,6 @@ fun ShowHamburgerIcon(onHamburgerClicked: () -> Unit) {
         }) {
         Icon(
             painterResource("menu_top_icon.xml"),
-            contentDescription = null
-        )
-    }
-}
-
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-fun ShowBackArrow(onBackPressed: () -> Unit) {
-    IconButton(
-        onClick = {
-            println("back button clicked")
-            onBackPressed.invoke()
-        }) {
-        Icon(
-            painterResource("arrow_back.xml"),
             contentDescription = null
         )
     }
@@ -232,6 +205,4 @@ fun SetupBottomBar(bottomBarVisibilityState: Boolean) {
             }
         }
     }
-}
-
 */

@@ -1,5 +1,6 @@
 package data
 
+import data.networking.TMDB_BASE_URL
 import io.ktor.client.request.*
 import io.ktor.http.*
 
@@ -8,7 +9,7 @@ import io.ktor.http.*
  */
 fun HttpRequestBuilder.apiUrl(path: String) {
     url {
-        takeFrom("https://api.themoviedb.org")
+        takeFrom(TMDB_BASE_URL)
         path(path)
     }
 }

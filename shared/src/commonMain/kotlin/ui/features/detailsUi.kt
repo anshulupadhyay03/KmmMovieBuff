@@ -11,10 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,11 +47,12 @@ fun MovieDetailsScreen(component: DetailsScreenComponent) {
     ) {
         when (movieDetailState) {
             MovieDetailsUiState.Loading -> {
-                Text("Loading")
+                CircularProgressIndicator()
             }
             is MovieDetailsUiState.Success -> {
-                print("hi coming to success")
-                ShowMovieDetails((movieDetailState as MovieDetailsUiState.Success).movieDetails)
+                ShowMovieDetails((movieDetailState as MovieDetailsUiState.Success).movieDetails) {
+                    component.onBackPressed()
+                }
             }
             else -> {
                 Text("Error")
@@ -78,56 +76,57 @@ fun ShowCasts(casts: List<MovieCast>) {
                 .padding(top = 5.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-           items(casts){
-               Column(
-                   modifier = Modifier
-                       .padding(start = 5.dp, end = 5.dp),
-                   horizontalAlignment = Alignment.CenterHorizontally
-               ) {
+            items(casts) {
+                Column(
+                    modifier = Modifier
+                        .padding(start = 5.dp, end = 5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-                   val painterResource = rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${it.avatarPath}")
+                    val painterResource =
+                        rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${it.avatarPath}")
 
-                   Image(
-                       painter = painterResource,
-                       modifier = Modifier
-                           .width(80.dp)
-                           .height(100.dp)
-                           .clip(RoundedCornerShape(10)),
-                       contentScale = ContentScale.Crop,
-                       contentDescription = "reviews"
-                   )
-
-                   /* val painterResource =
-                        asyncPainterResource(data = "https://image.tmdb.org/t/p/original${it.avatarPath}")
-                    KamelImage(
+                    Image(
+                        painter = painterResource,
                         modifier = Modifier
                             .width(80.dp)
                             .height(100.dp)
                             .clip(RoundedCornerShape(10)),
-                        resource = painterResource,
                         contentScale = ContentScale.Crop,
-                        contentDescription = "reviews",
-                        animationSpec = tween()
-                    )*/
-                   Text(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .widthIn(max = 100.dp),
-                       text = it.name,
-                       color = Color.DarkGray,
-                       fontWeight = FontWeight.Bold,
-                       overflow = TextOverflow.Ellipsis
-                   )
-                   Text(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .widthIn(max = 100.dp),
-                       text = it.characterName,
-                       color = Color.DarkGray,
-                       overflow = TextOverflow.Ellipsis
-                   )
-               }
-           }
+                        contentDescription = "reviews"
+                    )
+
+                    /* val painterResource =
+                         asyncPainterResource(data = "https://image.tmdb.org/t/p/original${it.avatarPath}")
+                     KamelImage(
+                         modifier = Modifier
+                             .width(80.dp)
+                             .height(100.dp)
+                             .clip(RoundedCornerShape(10)),
+                         resource = painterResource,
+                         contentScale = ContentScale.Crop,
+                         contentDescription = "reviews",
+                         animationSpec = tween()
+                     )*/
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .widthIn(max = 100.dp),
+                        text = it.name,
+                        color = Color.DarkGray,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .widthIn(max = 100.dp),
+                        text = it.characterName,
+                        color = Color.DarkGray,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
         }
     }
 
@@ -144,30 +143,25 @@ private fun ShowHeaderText(title: String) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ShowKeyWords(keywords: List<String>) {
-    ChipVerticalGrid(
-        spacing = 3.dp,
-        modifier = Modifier
-            .padding(7.dp)
-    ) {
+
+    Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
         keywords.forEach { word ->
-            Text(
-                fontSize = 8.sp,
-                text = word,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .border(1.dp, color = MaterialTheme.colorScheme.outline, shape = CircleShape)
-                    .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
-                    .padding(vertical = 2.dp, horizontal = 5.dp)
+            println("word : $word")
+            SuggestionChip(
+                onClick = {},
+                label = { Text(word) },
+                modifier = Modifier.padding(2.dp)
             )
         }
     }
 }
 
 @Composable
-fun ShowMovieDetails(movieDetailsModel: MovieDetailsModel) {
-    ShowImages(movieDetailsModel)
+fun ShowMovieDetails(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> Unit) {
+    ShowImages(movieDetailsModel, onBackPressed)
     ShowOverview(movieDetailsModel.overview, movieDetailsModel.vote)
     ShowMovieInfo(movieDetailsModel.movieInfo)
     ShowKeyWords(movieDetailsModel.keywords)
@@ -190,8 +184,9 @@ fun ShowPostersAndBackDrops(posters: List<String>, backdrops: List<String>) {
                     .height(200.dp),
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                items(posters){
-                    val painterResource = rememberAsyncImagePainter("https://image.tmdb.org/t/p/original$it")
+                items(posters) {
+                    val painterResource =
+                        rememberAsyncImagePainter("https://image.tmdb.org/t/p/original$it")
 
                     Image(
                         painter = painterResource,
@@ -226,8 +221,9 @@ fun ShowPostersAndBackDrops(posters: List<String>, backdrops: List<String>) {
                     .height(200.dp),
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                items(backdrops){
-                    val painterResource = rememberAsyncImagePainter("https://image.tmdb.org/t/p/original$it")
+                items(backdrops) {
+                    val painterResource =
+                        rememberAsyncImagePainter("https://image.tmdb.org/t/p/original$it")
 
                     Image(
                         painter = painterResource,
@@ -302,7 +298,7 @@ fun ShowReviews(reviews: List<MovieReview>) {
                 .padding(top = 5.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            items(reviews, key = {it.url}){
+            items(reviews, key = { it.url }) {
                 ShowReviewCards(it)
             }
         }
@@ -319,7 +315,8 @@ fun ShowReviewCards(review: MovieReview) {
     ) {
         Row {
 
-            val painterResource = rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${review.avatarPath}")
+            val painterResource =
+                rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${review.avatarPath}")
 
             Image(
                 painter = painterResource,
@@ -349,7 +346,10 @@ fun ShowReviewCards(review: MovieReview) {
                     Row(
                         modifier = Modifier
                             .padding(start = 7.dp)
-                            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(10.dp))
+                            .background(
+                                MaterialTheme.colorScheme.secondary,
+                                RoundedCornerShape(10.dp)
+                            )
                             .padding(2.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -449,15 +449,19 @@ private fun ShowOverview(overview: String, vote: Double) {
 }
 
 @Composable
-private fun ShowImages(movieDetailsModel: MovieDetailsModel) {
+private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
-        contentAlignment = Alignment.CenterStart
+            .height(250.dp)
     ) {
 
-        val painterResource = rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${movieDetailsModel.backDropImage}")
+        ShowBackArrow {
+            onBackPressed.invoke()
+        }
+
+        val painterResource =
+            rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${movieDetailsModel.backDropImage}")
 
         Image(
             painter = painterResource,
@@ -465,7 +469,7 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel) {
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .alpha(0.3f),
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.Crop,
             contentDescription = "movieImages"
         )
 
@@ -484,8 +488,10 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel) {
 
         Row(
             modifier = Modifier
+                .padding(top = 50.dp)
                 .fillMaxWidth()
                 .height(180.dp)
+
         ) {
             val visibleState = remember {
                 MutableTransitionState(false).apply {
@@ -501,10 +507,11 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel) {
                 }
             ) {
 
-                val painterResource = rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${movieDetailsModel.posterImage}")
+                val sideImageRes =
+                    rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${movieDetailsModel.posterImage}")
 
                 Image(
-                    painter = painterResource,
+                    painter = sideImageRes,
                     modifier = Modifier
                         .width(120.dp)
                         .height(180.dp)
@@ -549,6 +556,21 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel) {
 
     }
 
+}
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun ShowBackArrow(onBackPressed: () -> Unit) {
+    IconButton(
+        onClick = {
+            println("back button clicked")
+            onBackPressed.invoke()
+        }) {
+        Icon(
+            painterResource("arrow_back.xml"),
+            contentDescription = null
+        )
+    }
 }
 
 @Composable
