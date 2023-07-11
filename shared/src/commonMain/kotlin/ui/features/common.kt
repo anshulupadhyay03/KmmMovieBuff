@@ -96,15 +96,13 @@ fun ErrorItem(error: String, onRefreshClick: () -> Unit) {
             color = Color.Red
         )
     }
-
 }
 
 @Composable
 fun LoadingItem() {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
@@ -112,6 +110,7 @@ fun LoadingItem() {
                 .width(40.dp)
                 .height(40.dp)
                 .padding(8.dp)
+
         )
     }
 }
