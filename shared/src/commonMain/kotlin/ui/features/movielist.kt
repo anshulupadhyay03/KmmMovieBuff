@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,13 +36,11 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
             }
         }
     ) {
-
         items(movieList, key = {it.id}) {
             MovieRow(it) {movieId ->
                 mainScreenComponent.viewModel.onItemClicked(movieId)
             }
         }
-
         item(
             key = mainScreenComponent.viewModel.listState
         ){
@@ -54,7 +50,7 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
                 }
 
                 ListState.PAGINATING -> {
-                    LoadingItem()
+                   LinearProgressIndicator(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp).fillMaxWidth())
                 }
                 else ->{
                     

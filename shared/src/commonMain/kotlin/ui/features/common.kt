@@ -30,7 +30,7 @@ enum class RatingBarColors(val highlightColor: Color, val surfaceColor: Color) {
 
 private fun getRatingBarColors(voteAverage: Double): RatingBarColors {
     return when {
-        (voteAverage * 10).toInt() > 70 -> {
+        (voteAverage * 10).toInt() >= 70 -> {
             RatingBarColors.GREEN
         }
         else -> RatingBarColors.YELLOW
@@ -80,7 +80,6 @@ fun AddVoteProgressBar(voteAverage: Double) {
     }
 }
 
-
 @Composable
 fun ErrorItem(error: String, onRefreshClick: () -> Unit) {
     Button(
@@ -110,7 +109,6 @@ fun LoadingItem() {
                 .width(40.dp)
                 .height(40.dp)
                 .padding(8.dp)
-
         )
     }
 }
