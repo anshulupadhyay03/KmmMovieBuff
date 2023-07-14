@@ -1,16 +1,23 @@
 package ui.features
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.seiko.imageloader.rememberAsyncImagePainter
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -21,7 +28,6 @@ fun UserImageArea() {
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .border(2.dp, Color.Gray)
     ) {
         Row(
         ) {
@@ -31,16 +37,22 @@ fun UserImageArea() {
                 painter = painterResource,
                 modifier = Modifier
                     .width(120.dp)
-                    .height(150.dp),
+                    .height(150.dp)
+                    .clip(CircleShape)
+                    .aspectRatio(1f),
                 contentScale = ContentScale.Crop,
                 contentDescription = ""
             )
 
             Spacer(modifier = Modifier.fillMaxHeight().width(2.dp))
 
-            Column {
-                Text("Anshul Upadhyay")
-                Text("Joined on : 03 Mar 2021")
+            Column(modifier = Modifier.padding(10.dp)) {
+                Text("Jenna Lee" , style = TextStyle(
+                    color = Color.DarkGray,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ))
+                Text("Member Since : 03 Mar 2021")
             }
         }
     }
@@ -65,11 +77,13 @@ fun OptionItem(name: String) {
         Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .clickable { },
+            .padding(10.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(5.dp))
+            .clickable {},
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource("outline_home.xml"),
+            painter = painterResource("date_range.xml"),
             contentDescription = null
         )
 

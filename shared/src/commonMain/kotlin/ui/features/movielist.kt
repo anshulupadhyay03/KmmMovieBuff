@@ -1,7 +1,6 @@
 package ui.features
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,8 +32,7 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
     val movieList = mainScreenComponent.viewModel.movieLists
     LazyColumn(
         modifier = Modifier
-            .padding(5.dp)
-            .background(Color.LightGray),
+            .padding(5.dp),
         state = rememberLazyListState().apply {
             OnBottomReached {
                 mainScreenComponent.viewModel.loadMore()
@@ -161,7 +159,7 @@ private fun ShowMovieImage(path: String, voteAverage: Double) {
                             x = size.width - dotSize,
                             y = size.height - dotSize
                         ),
-                        blendMode = BlendMode.Color
+                        blendMode = BlendMode.Darken
                     )
                     drawCircle(
                         ratingBarColors.highlightColor, radius = dotSize * 0.8f,
@@ -175,7 +173,7 @@ private fun ShowMovieImage(path: String, voteAverage: Double) {
                         text = "${(voteAverage * 10).toInt()}%",
                         style = TextStyle(
                             color = Color.White ,
-                            fontSize = 10.sp
+                            fontSize = 9.sp
                         ),
                         topLeft = Offset(
                             x = size.width - dotSize - 20,

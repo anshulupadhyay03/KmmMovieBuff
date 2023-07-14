@@ -1,11 +1,13 @@
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.seiko.imageloader.LocalImageLoader
@@ -61,7 +63,7 @@ fun AppDrawer() {
         modifier = Modifier.padding(10.dp)
     ) {
         UserImageArea()
-        Spacer(modifier = Modifier.height(10.dp).fillMaxWidth())
+        Spacer(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color.LightGray))
         DrawerOptions()
     }
 }
@@ -85,7 +87,7 @@ fun AppScaffoldContent(
         }*/
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues).background(Color.LightGray)
         ) {
             Children(root.childStack) {
                 when (val child = it.instance) {
