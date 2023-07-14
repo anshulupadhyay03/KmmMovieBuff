@@ -28,6 +28,8 @@ fun UserImageArea() {
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(10.dp)
     ) {
         Row(
         ) {
@@ -48,11 +50,15 @@ fun UserImageArea() {
 
             Column(modifier = Modifier.padding(10.dp)) {
                 Text("Jenna Lee" , style = TextStyle(
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 ))
-                Text("Member Since : 03 Mar 2021")
+                Text("Member Since : 03 Mar, 2021",
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontSize = 14.sp
+                    ))
             }
         }
     }

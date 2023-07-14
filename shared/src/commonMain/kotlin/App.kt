@@ -59,11 +59,14 @@ fun App(root: MovieBuffRoot) {
 
 @Composable
 fun AppDrawer() {
-    Column(
-        modifier = Modifier.padding(10.dp)
-    ) {
+    Column {
         UserImageArea()
-        Spacer(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color.LightGray))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+                .background(MaterialTheme.colorScheme.primary)
+        )
         DrawerOptions()
     }
 }
@@ -109,7 +112,7 @@ fun AppScaffoldContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetupTopBar(
     onHamburgerClicked: () -> Unit,
