@@ -28,7 +28,7 @@ enum class RatingBarColors(val highlightColor: Color, val surfaceColor: Color) {
     YELLOW(Yellow, LightYellow);
 }
 
-private fun getRatingBarColors(voteAverage: Double): RatingBarColors {
+fun getRatingBarColors(voteAverage: Double): RatingBarColors {
     return when {
         (voteAverage * 10).toInt() >= 70 -> {
             RatingBarColors.GREEN

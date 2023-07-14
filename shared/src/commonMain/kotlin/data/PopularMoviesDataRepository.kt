@@ -25,7 +25,7 @@ private fun mapToDomain(data: PUNTMoviesResponse, hasMorePages: Boolean): List<M
             it.posterPath ?: "",
             it.id,
             it.title,
-            it.popularity,
+            it.overview,
             it.releaseDate,
             it.voteAverage,
             hasMorePages

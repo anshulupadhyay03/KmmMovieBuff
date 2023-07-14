@@ -1,7 +1,6 @@
 package data.details
 
 import domain.*
-import util.format
 
 
 internal fun mapToDomain(response: MovieDetailsResponse): MovieDetailsModel {
@@ -82,10 +81,4 @@ private fun mapUserReviews(reviews: MovieReviewsResponse): List<MovieReview> {
             it.author_details.rating ?: 0.0
         )
     }
-}
-
-private fun String.dateFormat(): String {
-    val dateFormat = "dd-MMM-yy"
-    return this.format(dateFormat)
-
 }
