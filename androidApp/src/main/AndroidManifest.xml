@@ -7,6 +7,8 @@
         android:allowBackup="false"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
+        android:label="Movie Buff"
+        android:icon="@mipmap/app_movies_icon"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
