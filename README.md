@@ -28,8 +28,8 @@ https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d
   - Adding the Web support
   - Improving overall Architecture
   - Write some unit test cases
-  - Implementing videos from the TMDB apis
-  - working on some cool feature
+  - Implementing videos from the TMDB APIs
+  - working on some cool features
     
 ## Tech Stack
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
