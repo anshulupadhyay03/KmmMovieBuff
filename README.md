@@ -22,7 +22,15 @@ Once you have got the api key follow the below steps:
 https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d-ed3462bc5450
 
 
-
+## What's Next
+  - Some more UI improvement
+  - Adding Login functionality
+  - Adding the Web support
+  - Improving overall Architecture
+  - Write some unit test cases
+  - Implementing videos from the TMDB apis
+  - working on some cool feature
+    
 ## Tech Stack
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Android’s modern toolkit for building native UI.
