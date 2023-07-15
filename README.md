@@ -1,13 +1,13 @@
 ## TMBD Movie KMM app for Android and iOS
 This project is the implementation of how one can adopt the Kmp (Kotlin multiplatform) for building Android and ios apps.
 I have used the TMDB's developer apis to fetch the movie-related data. I have used the **Compose Multiplatform** to build the 
-UI of both platforms. If you are new to Compose multiplatform please go through : https://www.jetbrains.com/lp/compose-multiplatform/ 
+UI of both platforms. If you are new to Compose multiplatform please go through: https://www.jetbrains.com/lp/compose-multiplatform/ 
 
 
 ## How to build the project
 To build the project you need some basic understanding of how the KMP projects are built.
-For that you have look at: https://kotlinlang.org/docs/multiplatform-mobile-getting-started.html
-To build the project first you must generate the api key from the TMDB developers portal : 
+For that, you have look at: https://kotlinlang.org/docs/multiplatform-mobile-getting-started.html
+To build the project first you must generate the API key from the TMDB developers portal : 
 https://developer.themoviedb.org/
 
 Once you have got the api key follow the below steps:
@@ -18,17 +18,18 @@ Once you have got the api key follow the below steps:
 
 ## Demo Video
 
-![Android and iOS](/demo_video.mp4?raw=true "Optional Title")
+
+https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d-ed3462bc5450
 
 
 
 ## Tech Stack
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Android’s modern toolkit for building native UI.
-- [Jetbrain's compose multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/) - UI development for Android , iOS, Web,Desktop and many more.
+- [Jetbrain's compose multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/) - UI development for Android, iOS, Web, Desktop and many more.
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) and [Flow](https://kotlinlang.org/docs/reference/coroutines/flow.html#asynchronous-flow) - Official Kotlin's tooling for performing asynchronous work.
 - [MVVM/MVI Architecture](https://developer.android.com/jetpack/guide) - Official recommended architecture for building robust, production-quality apps.
-- [Kotlin multiplatform](https://kotlinlang.org/docs/multiplatform-mobile-getting-started.html) - Kotlin based development for frontend applications for Android,iOS,Web and desktop.
+- [Kotlin multiplatform](https://kotlinlang.org/docs/multiplatform-mobile-getting-started.html) - Kotlin-based development for frontend applications for Android,iOS, Web and desktop.
 - [Decompose](https://arkivanov.github.io/Decompose/) - Kotlin Multiplatform library for breaking down your code into lifecycle-aware business logic components (aka BLoC), with routing functionality and pluggable UI (Jetpack Compose, Android Views, SwiftUI, JS React, etc.)
 - [Image Loading](https://github.com/qdsfdhvh/compose-imageloader) - Compose Image library for Kotlin Multiplatform.
 - [Async data lading](https://ktor.io/docs/welcome.html) - Ktor is a framework to easily build connected applications – web applications, HTTP services, mobile and browser applications.
