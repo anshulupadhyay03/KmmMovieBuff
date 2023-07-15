@@ -33,8 +33,8 @@ For more information about used dependencies, see [this](/gradle/libs.versions.t
 
 If you have any questions regarding the codebase, or you would like to discuss anything about the project hit/connect me up on :
 
- *[Twitter](https://twitter.com/RealLifeGyan).
- *[LinkedIN](https://www.linkedin.com/in/anshul-upadhyay-13189952/)
+ - [Twitter](https://twitter.com/RealLifeGyan).
+ - [LinkedIN](https://www.linkedin.com/in/anshul-upadhyay-13189952/)
 
 
 
