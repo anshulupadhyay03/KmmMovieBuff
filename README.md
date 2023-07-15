@@ -16,6 +16,11 @@ Once you have got the api key follow the below steps:
  3. choose the platform and hit run
 
 
+## Demo Video
+
+
+
+
 ## Tech Stack
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Android’s modern toolkit for building native UI.
