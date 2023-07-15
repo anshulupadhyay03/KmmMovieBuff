@@ -11,7 +11,7 @@ To build the project first you must generate the api key from the TMDB developer
 https://developer.themoviedb.org/
 
 Once you have got the api key follow the below steps:
- 1. Search for the file network.kt file which can be found KmmMovieBuff/shared/commonMain/kotlin/data
+ 1. Search for the file network.kt file which can be found at (/shared/commonMain/kotlin/data/network.kt)
  2. Replace the api key within quotes instead of text <Replace with your tmdb token>
  3. choose the platform and hit run
 
