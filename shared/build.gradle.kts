@@ -3,7 +3,7 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
-    kotlin("plugin.serialization").version("1.8.20")
+    kotlin("plugin.serialization") version "1.9.22"
     id("kotlin-parcelize")
     //id("com.codingfeline.buildkonfig") version "+"
 }
@@ -32,7 +32,6 @@ kotlin {
             export(libs.arkivanov.decompose)
             transitiveExport = true
         }
-        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
     
     sourceSets {

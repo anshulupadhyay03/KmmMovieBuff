@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.retroent.moviebuff.android"
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.retroent.moviebuff.android"
         minSdk = 24
@@ -17,7 +17,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packagingOptions {
         resources {
@@ -42,10 +42,10 @@ android {
 dependencies {
     //coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
     implementation(project(":shared"))
-    implementation("androidx.compose.ui:ui:1.4.0")
-    implementation("androidx.compose.ui:ui-tooling:1.4.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
-    implementation("androidx.compose.foundation:foundation:1.4.0")
-    implementation("androidx.compose.material:material:1.4.0")
+    implementation("androidx.compose.ui:ui:1.5.4")
+    implementation("androidx.compose.ui:ui-tooling:1.5.4")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.4")
+    implementation("androidx.compose.foundation:foundation:1.5.4")
+    implementation("androidx.compose.material:material:1.5.4")
     implementation("androidx.activity:activity-compose:1.7.0")
 }
