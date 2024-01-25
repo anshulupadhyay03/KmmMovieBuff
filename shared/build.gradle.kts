@@ -1,15 +1,15 @@
+
 plugins {
-    kotlin("multiplatform")
-    kotlin("native.cocoapods")
-    id("com.android.library")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsCompose)
     kotlin("plugin.serialization") version "1.9.22"
     id("kotlin-parcelize")
     //id("com.codingfeline.buildkonfig") version "+"
 }
 
 kotlin {
-    android {
+    androidTarget() {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -20,19 +20,16 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "14.1"
-        podfile = project.file("../iosApp/Podfile")
-        framework {
-            baseName = "shared"
-            isStatic=true
-            export(libs.arkivanov.decompose)
-            transitiveExport = true
+    /*@OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "composeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
         }
-    }
+        binaries.executable()
+    }*/
     
     sourceSets {
         val commonMain by getting {
@@ -119,14 +116,19 @@ android {
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
+        applicationId = "com.retroent.moviebuff.android"
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
+        versionCode = 1
+        versionName = "1.0"
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlin {
-        jvmToolchain(11)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+/*
+compose.experimental {
+    web.application {}
+}*/
