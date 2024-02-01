@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
+    kotlin("native.cocoapods")
     kotlin("plugin.serialization") version "1.9.22"
     id("kotlin-parcelize")
     //id("com.codingfeline.buildkonfig") version "+"
@@ -10,9 +11,30 @@ plugins {
 
 kotlin {
     androidTarget()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+        }
+    }
+
+    cocoapods {
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        version = "1.0"
+        ios.deploymentTarget = "14.1"
+        podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "shared"
+            isStatic=true
+            export(libs.arkivanov.decompose)
+            transitiveExport = true
+        }
+    }
 
     /*@OptIn(ExperimentalWasmDsl::class)
     wasmJs {
