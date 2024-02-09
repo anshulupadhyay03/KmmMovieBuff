@@ -30,8 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.seiko.imageloader.ImageRequestState
-import com.seiko.imageloader.rememberAsyncImagePainter
+import coil3.compose.rememberAsyncImagePainter
 import decompose.DetailsScreenComponent
 import domain.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -89,7 +88,18 @@ fun ShowCasts(casts: List<MovieCast>) {
                     val painterResource =
                         rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${it.avatarPath}")
 
-                    when(painterResource.requestState){
+                    Image(
+                        painter = painterResource,
+                        modifier = Modifier
+                            .width(80.dp)
+                            .height(100.dp)
+                            .clip(RectangleShape)
+                            .border(2.dp, color = Color.DarkGray),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "reviews"
+                    )
+
+                   /* when(painterResource.requestState){
                         is ImageRequestState.Loading -> {
                             CircularProgressIndicator()
                         }
@@ -117,7 +127,7 @@ fun ShowCasts(casts: List<MovieCast>) {
                                 contentDescription = "reviews"
                             )
                         }
-                    }
+                    }*/
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -271,7 +281,17 @@ fun ShowReviewCards(review: MovieReview) {
             val painterResource =
                 rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${review.avatarPath}")
 
-            when(painterResource.requestState){
+            Image(
+                painter = painterResource,
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                contentScale = ContentScale.Crop,
+                contentDescription = "reviews"
+            )
+
+           /* when(painterResource.requestState){
                 is ImageRequestState.Loading -> {
                     CircularProgressIndicator()
                 }
@@ -298,7 +318,7 @@ fun ShowReviewCards(review: MovieReview) {
                         contentDescription = "reviews"
                     )
                 }
-            }
+            }*/
             Column(modifier = Modifier.padding(5.dp)) {
                 Row {
                     Text(text = review.title)

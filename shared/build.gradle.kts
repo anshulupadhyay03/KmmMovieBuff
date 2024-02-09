@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,7 +11,19 @@ plugins {
 }
 
 kotlin {
-    androidTarget()
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+
+   /* @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+       browser()
+    }*/
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -36,17 +49,6 @@ kotlin {
         }
     }
 
-    /*@OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
-        binaries.executable()
-    }*/
-    
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -62,7 +64,9 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
 
                 //Image downloading
-                api(libs.image.loading)
+                implementation(libs.coil.coil)
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor)
 
                 // Ktor
                 implementation(libs.ktor.client.core)
@@ -83,19 +87,16 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting {
-            dependencies {
-                api(libs.kotlinx.coroutines.android)
+         androidMain.dependencies{
+             implementation(libs.kotlinx.coroutines.android)
 
-                // Android
-                api(libs.androidx.activity.compose)
-                api(libs.androidx.appcompat)
-                api(libs.androidx.core.ktx)
+             // Android
+             implementation(libs.androidx.activity.compose)
+             implementation(libs.androidx.appcompat)
+             implementation(libs.androidx.core.ktx)
 
-                // Ktor
-                api(libs.ktor.client.okhttp)
-
-            }
+             // Ktor
+             implementation(libs.ktor.client.okhttp)
         }
         val androidUnitTest by getting
         val iosX64Main by getting
@@ -120,6 +121,12 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
+
+       /* val wasmJsMain by getting{
+            dependencies {
+                implementation(libs.ktor.client.web)
+            }
+        }*/
     }
 }
 
@@ -144,7 +151,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
-/*
 compose.experimental {
     web.application {}
-}*/
+}

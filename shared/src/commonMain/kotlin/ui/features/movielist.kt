@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seiko.imageloader.rememberAsyncImagePainter
+import coil3.compose.AsyncImage
 import decompose.MainScreenComponent
 import domain.ListState
 import domain.MovieResult
@@ -120,14 +120,71 @@ fun MovieRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
     }
 }
 
-
-@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun ShowMovieImage(path: String, voteAverage: Double) {
-    val painterResource =
-        rememberAsyncImagePainter("https://image.tmdb.org/t/p/original$path")
+   /* val painterResource =
+        rememberAsyncImagePainter("https://image.tmdb.org/t/p/original$path")*/
     val ratingBarColors = getRatingBarColors(voteAverage)
     val measurer = rememberTextMeasurer()
+    AsyncImage(
+        model = "https://image.tmdb.org/t/p/original$path",
+        modifier = Modifier
+            .width(120.dp)
+            .height(150.dp)
+            .aspectRatio(1f)
+            .padding(3.dp)
+            .graphicsLayer {
+                compositingStrategy = CompositingStrategy.Offscreen
+            }
+            .drawWithCache {
+                val path = Path()
+                path.addOval(
+                    Rect(
+                        topLeft = Offset.Zero,
+                        bottomRight = Offset(size.width, size.height)
+                    )
+                )
+                onDrawWithContent {
+                    clipPath(path) {
+                        this@onDrawWithContent.drawContent()
+                    }
+                    val dotSize = size.width / 8f
+
+                    drawCircle(
+                        Color.Black,
+                        radius = dotSize,
+                        center = Offset(
+                            x = size.width - dotSize,
+                            y = size.height - dotSize
+                        ),
+                        blendMode = BlendMode.Darken
+                    )
+                    drawCircle(
+                        ratingBarColors.highlightColor, radius = dotSize * 0.8f,
+                        center = Offset(
+                            x = size.width - dotSize,
+                            y = size.height - dotSize
+                        )
+                    )
+                    drawText(
+                        textMeasurer = measurer,
+                        text = "${(voteAverage * 10).toInt()}%",
+                        style = TextStyle(
+                            color = Color.White ,
+                            fontSize = 9.sp
+                        ),
+                        topLeft = Offset(
+                            x = size.width - dotSize - 20,
+                            y = size.height - dotSize - 20
+                        )
+                    )
+                }
+            },
+        contentScale = ContentScale.Crop,
+        contentDescription = null,
+    )
+
+  /*
     Image(
         painter = painterResource,
         modifier = Modifier
@@ -184,7 +241,7 @@ private fun ShowMovieImage(path: String, voteAverage: Double) {
             },
         contentScale = ContentScale.Crop,
         contentDescription = ""
-    )
+    )*/
 }
 
 

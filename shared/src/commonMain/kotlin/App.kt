@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
-import com.seiko.imageloader.LocalImageLoader
 import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -20,15 +19,10 @@ import ui.features.DrawerOptions
 import ui.features.MovieDetailsScreen
 import ui.features.MovieList
 import ui.features.UserImageArea
-import util.generateImageLoader
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(root: MovieBuffRoot) {
-    CompositionLocalProvider(
-        LocalImageLoader provides generateImageLoader()
-    ) {
         MovieBuffTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -54,7 +48,6 @@ fun App(root: MovieBuffRoot) {
                 }
             }
         }
-    }
 }
 
 @Composable
