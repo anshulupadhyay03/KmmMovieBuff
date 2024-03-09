@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -18,11 +19,29 @@ kotlin {
             }
         }
     }
+    
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "MovieBuff"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "MovieBuff.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    open = mapOf(
+                        "app" to mapOf(
+                            "name" to "google chrome dev"
+                        )
+                    )
+                }
+            }
+        }
+        binaries.executable()
+    }
 
-   /* @OptIn(ExperimentalWasmDsl::class)
+
     wasmJs {
        browser()
-    }*/
+    }
 
     listOf(
         iosX64(),
@@ -45,6 +64,7 @@ kotlin {
             baseName = "shared"
             isStatic=true
             export(libs.arkivanov.decompose)
+            export(libs.essenty.lifecycle)
             transitiveExport = true
         }
     }
@@ -58,7 +78,7 @@ kotlin {
                 implementation(compose.ui)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation ("io.github.oleksandrbalan:textflow:1.1.0")
+               // implementation ("io.github.oleksandrbalan:textflow:1.1.0")
 
 
                 implementation(libs.kotlinx.coroutines.core)
@@ -76,6 +96,7 @@ kotlin {
 
                 //di,navigation,lifecycle
                 api(libs.arkivanov.decompose)
+                implementation(libs.essenty.lifecycle)
                 implementation(libs.arkivanov.jetbrains.uiext)
 
                 //kotlin date&time
@@ -122,11 +143,11 @@ kotlin {
             iosSimulatorArm64Test.dependsOn(this)
         }
 
-       /* val wasmJsMain by getting{
+        val wasmJsMain by getting{
             dependencies {
                 implementation(libs.ktor.client.web)
             }
-        }*/
+        }
     }
 }
 
@@ -151,6 +172,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
+
 compose.experimental {
     web.application {}
 }

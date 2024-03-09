@@ -1,6 +1,5 @@
 package ui.features
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +22,8 @@ import coil3.compose.AsyncImage
 import decompose.MainScreenComponent
 import domain.ListState
 import domain.MovieResult
+import moviebuff.shared.generated.resources.Res
+import moviebuff.shared.generated.resources.date_range
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import util.OnBottomReached
@@ -94,7 +95,7 @@ fun MovieRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
                     Row {
                         Column {
                             Row(horizontalArrangement = Arrangement.Center) {
-                                Icon(painter = painterResource("date_range.xml"), "Release date")
+                                Icon(painter = painterResource(Res.drawable.date_range),"release date")
                                 Text(text = item.releaseDate)
                             }
 

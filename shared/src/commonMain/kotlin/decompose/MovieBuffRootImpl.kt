@@ -3,8 +3,7 @@ package decompose
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
+import kotlinx.serialization.Serializable
 
 class MovieBuffRootImpl(
     componentContext: ComponentContext,
@@ -30,7 +29,9 @@ class MovieBuffRootImpl(
     private val navigation = StackNavigation<Configuration>()
 
     private val stack = childStack(
+        key = "RootComponent",
         source = navigation,
+        serializer = Configuration.serializer(),
         initialConfiguration = Configuration.Dashboard,
         handleBackButton = true,
         childFactory = ::createChild
@@ -51,7 +52,9 @@ class MovieBuffRootImpl(
         }
 
     private fun onMovieSelected(movieId: Int) {
-        navigation.push(Configuration.Details(movieId))
+        navigation.push(Configuration.Details(movieId), onComplete = {
+            println("Ansh: isMovieSelected ")
+        })
     }
 
 
@@ -65,13 +68,14 @@ class MovieBuffRootImpl(
 
     private fun value() = stack
 
-    private sealed class Configuration : Parcelable {
-        @Parcelize
-        object Dashboard : Configuration()
+    @Serializable
+    private sealed class Configuration {
+        @Serializable
+        data object Dashboard : Configuration()
 
-        @Parcelize
+        @Serializable
         data class Details(
             val movieId: Int
-        ) : Configuration(), Parcelable
+        ) : Configuration()
     }
 }

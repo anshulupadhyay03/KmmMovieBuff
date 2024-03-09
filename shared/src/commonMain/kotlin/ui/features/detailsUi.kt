@@ -33,6 +33,10 @@ import androidx.compose.ui.zIndex
 import coil3.compose.rememberAsyncImagePainter
 import decompose.DetailsScreenComponent
 import domain.*
+import moviebuff.shared.generated.resources.Res
+import moviebuff.shared.generated.resources.arrow_back
+import moviebuff.shared.generated.resources.star
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -339,7 +343,7 @@ fun ShowReviewCards(review: MovieReview) {
                         )
                         Image(
                             modifier = Modifier.padding(start = 3.dp, end = 3.dp),
-                            painter = painterResource("star.png"),
+                            painter = painterResource(Res.drawable.star),
                             contentDescription =
                             "ratestar"
                         )
@@ -516,7 +520,7 @@ fun ShowBackArrow(onBackPressed: () -> Unit) {
             onBackPressed.invoke()
         }) {
         Icon(
-            painterResource("arrow_back.xml"),
+            painterResource(Res.drawable.arrow_back),
             contentDescription = null
         )
     }

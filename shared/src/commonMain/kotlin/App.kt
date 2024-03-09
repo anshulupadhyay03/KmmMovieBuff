@@ -9,9 +9,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.stack.Children
 import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
+import moviebuff.shared.generated.resources.Res
+import moviebuff.shared.generated.resources.menu_top_icon
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import style.MovieBuffTheme
@@ -139,7 +142,7 @@ fun ShowHamburgerIcon(onHamburgerClicked: () -> Unit) {
             onHamburgerClicked()
         }) {
         Icon(
-            painterResource("menu_top_icon.xml"),
+            painterResource(Res.drawable.menu_top_icon),
             contentDescription = null
         )
     }

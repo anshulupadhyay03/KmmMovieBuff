@@ -6,11 +6,12 @@ androidx-activityCompose = "1.8.2"
 androidx-appcompat = "1.6.1"
 androidx-core-ktx = "1.12.0"
 imageLoading = "1.5.2"
-decompose = "2.0.0-compose-experimental-beta-01"
+decompose = "3.0.0-alpha07"
+essenty = "2.0.0-alpha07"
 kotlinDateTime = "0.5.0"
-compose = "1.5.4"
-coil = "3.0.0-alpha04"
-compose-plugin = "1.6.0-alpha01"
+compose = "1.6.1"
+coil = "3.0.0-SNAPSHOT"
+compose-plugin = "1.6.0-rc03"
 kotlin = "1.9.21"
 agp = "8.2.1"
 
@@ -40,8 +41,9 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-wasm" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor-wasm" }
 
-arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-arkivanov-jetbrains-uiext = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+essenty-lifecycle = { group = "com.arkivanov.essenty", name = "lifecycle", version.ref = "essenty" }
+arkivanov-decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
+arkivanov-jetbrains-uiext = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
 
 #Image downloading
 coil-coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
@@ -53,3 +55,4 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
