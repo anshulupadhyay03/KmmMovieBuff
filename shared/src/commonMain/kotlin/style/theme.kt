@@ -92,10 +92,10 @@ fun AppTheme(
 fun MovieBuffTheme(
     content: @Composable () -> Unit
 ) {
-    val colorScheme = LightColors
+    val colorScheme = DarkColors
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = getTypography(),
         content = content
     )
 }

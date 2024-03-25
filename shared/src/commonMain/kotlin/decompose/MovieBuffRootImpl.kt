@@ -52,6 +52,7 @@ class MovieBuffRootImpl(
         }
 
     private fun onMovieSelected(movieId: Int) {
+        println("item onMovieSelected-$movieId")
         navigation.push(Configuration.Details(movieId), onComplete = {
             println("Ansh: isMovieSelected ")
         })

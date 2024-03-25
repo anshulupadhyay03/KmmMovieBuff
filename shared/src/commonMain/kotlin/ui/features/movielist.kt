@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -172,6 +173,7 @@ private fun ShowMovieImage(path: String, voteAverage: Double) {
                         text = "${(voteAverage * 10).toInt()}%",
                         style = TextStyle(
                             color = Color.White ,
+                            fontWeight = FontWeight.Bold,
                             fontSize = 9.sp
                         ),
                         topLeft = Offset(

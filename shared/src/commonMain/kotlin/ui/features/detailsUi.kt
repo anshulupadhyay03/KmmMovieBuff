@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -35,10 +36,13 @@ import decompose.DetailsScreenComponent
 import domain.*
 import moviebuff.shared.generated.resources.Res
 import moviebuff.shared.generated.resources.arrow_back
+import moviebuff.shared.generated.resources.ic_duration
 import moviebuff.shared.generated.resources.star
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.Resource
 import org.jetbrains.compose.resources.painterResource
+import style.MovieBuffTheme
 
 
 @Composable
@@ -54,13 +58,15 @@ fun MovieDetailsScreen(component: DetailsScreenComponent) {
             MovieDetailsUiState.Loading -> {
                 LoadingItem()
             }
+
             is MovieDetailsUiState.Success -> {
                 ShowMovieDetails((movieDetailState as MovieDetailsUiState.Success).movieDetails) {
                     component.onBackPressed()
                 }
             }
+
             else -> {
-                ErrorItem("Something went wrong"){}
+                ErrorItem("Something went wrong") {}
             }
         }
     }
@@ -69,12 +75,12 @@ fun MovieDetailsScreen(component: DetailsScreenComponent) {
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ShowCasts(casts: List<MovieCast>) {
+    AddTitleAndDivider("Top Actors")
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        ShowHeaderText("Top Actors")
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,35 +109,35 @@ fun ShowCasts(casts: List<MovieCast>) {
                         contentDescription = "reviews"
                     )
 
-                   /* when(painterResource.requestState){
-                        is ImageRequestState.Loading -> {
-                            CircularProgressIndicator()
-                        }
-                        is ImageRequestState.Failure -> {
-                            Image(
-                                painter = painterResource("reviewer_avtar.png"),
-                                modifier = Modifier
-                                    .width(80.dp)
-                                    .height(100.dp)
-                                    .clip(RectangleShape)
-                                    .border(2.dp, color = Color.DarkGray),
-                                contentScale = ContentScale.FillBounds,
-                                contentDescription = "reviews"
-                            )
-                        }
-                        is ImageRequestState.Success -> {
-                            Image(
-                                painter = painterResource,
-                                modifier = Modifier
-                                    .width(80.dp)
-                                    .height(100.dp)
-                                    .clip(RectangleShape)
-                                    .border(2.dp, color = Color.DarkGray),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = "reviews"
-                            )
-                        }
-                    }*/
+                    /* when(painterResource.requestState){
+                         is ImageRequestState.Loading -> {
+                             CircularProgressIndicator()
+                         }
+                         is ImageRequestState.Failure -> {
+                             Image(
+                                 painter = painterResource("reviewer_avtar.png"),
+                                 modifier = Modifier
+                                     .width(80.dp)
+                                     .height(100.dp)
+                                     .clip(RectangleShape)
+                                     .border(2.dp, color = Color.DarkGray),
+                                 contentScale = ContentScale.FillBounds,
+                                 contentDescription = "reviews"
+                             )
+                         }
+                         is ImageRequestState.Success -> {
+                             Image(
+                                 painter = painterResource,
+                                 modifier = Modifier
+                                     .width(80.dp)
+                                     .height(100.dp)
+                                     .clip(RectangleShape)
+                                     .border(2.dp, color = Color.DarkGray),
+                                 contentScale = ContentScale.Crop,
+                                 contentDescription = "reviews"
+                             )
+                         }
+                     }*/
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -162,15 +168,13 @@ private fun ShowHeaderText(title: String) {
         modifier = Modifier
             .fillMaxWidth(),
         text = title,
-        color = Color.DarkGray,
         fontWeight = FontWeight.Bold
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ShowKeyWords(keywords: List<String>) {
-
+    AddTitleAndDivider("Tags")
     Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
         keywords.forEach { word ->
             println("word : $word")
@@ -184,14 +188,26 @@ fun ShowKeyWords(keywords: List<String>) {
 }
 
 @Composable
+fun AddTitleAndDivider(sectionTitle: String) {
+    Column(modifier = Modifier.padding(5.dp)) {
+        ShowHeaderText(sectionTitle)
+        HorizontalDivider()
+    }
+
+}
+
+@Composable
 fun ShowMovieDetails(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> Unit) {
     ShowImages(movieDetailsModel, onBackPressed)
+    HorizontalDivider()
     ShowOverview(movieDetailsModel.overview, movieDetailsModel.vote)
+    HorizontalDivider()
     ShowMovieInfo(movieDetailsModel.movieInfo)
     ShowKeyWords(movieDetailsModel.keywords)
     if (movieDetailsModel.reviews.isNotEmpty()) {
         ShowReviews(movieDetailsModel.reviews)
     }
+
     ShowCasts(movieDetailsModel.topCast)
     ShowPostersAndBackDrops(movieDetailsModel.posters, movieDetailsModel.backdrops)
     //ShowVideos(movieDetailsModel.videos)
@@ -201,7 +217,7 @@ fun ShowMovieDetails(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> 
 fun ShowPostersAndBackDrops(posters: List<String>, backdrops: List<String>) {
     Column(modifier = Modifier.padding(5.dp)) {
         if (posters.isNotEmpty()) {
-            ShowHeaderText("Posters")
+            AddTitleAndDivider("Posters")
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -225,7 +241,7 @@ fun ShowPostersAndBackDrops(posters: List<String>, backdrops: List<String>) {
         }
 
         if (backdrops.isNotEmpty()) {
-            ShowHeaderText("Backdrops")
+            AddTitleAndDivider("Backdrops")
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -253,12 +269,12 @@ fun ShowPostersAndBackDrops(posters: List<String>, backdrops: List<String>) {
 
 @Composable
 fun ShowReviews(reviews: List<MovieReview>) {
+    AddTitleAndDivider("Reviews(${reviews.size})")
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        ShowHeaderText(title = "Reviews(${reviews.size})")
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -272,7 +288,7 @@ fun ShowReviews(reviews: List<MovieReview>) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ShowReviewCards(review: MovieReview) {
     Card(modifier = Modifier
@@ -295,34 +311,34 @@ fun ShowReviewCards(review: MovieReview) {
                 contentDescription = "reviews"
             )
 
-           /* when(painterResource.requestState){
-                is ImageRequestState.Loading -> {
-                    CircularProgressIndicator()
-                }
-                is ImageRequestState.Failure -> {
-                    Image(
-                        painter = painterResource("reviewer_avtar.png"),
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(50.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .border(2.dp,Color.LightGray),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "reviews"
-                    )
-                }
-                is ImageRequestState.Success -> {
-                    Image(
-                        painter = painterResource,
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(50.dp)
-                            .clip(RoundedCornerShape(10.dp)),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "reviews"
-                    )
-                }
-            }*/
+            /* when(painterResource.requestState){
+                 is ImageRequestState.Loading -> {
+                     CircularProgressIndicator()
+                 }
+                 is ImageRequestState.Failure -> {
+                     Image(
+                         painter = painterResource("reviewer_avtar.png"),
+                         modifier = Modifier
+                             .width(50.dp)
+                             .height(50.dp)
+                             .clip(RoundedCornerShape(10.dp))
+                             .border(2.dp,Color.LightGray),
+                         contentScale = ContentScale.Crop,
+                         contentDescription = "reviews"
+                     )
+                 }
+                 is ImageRequestState.Success -> {
+                     Image(
+                         painter = painterResource,
+                         modifier = Modifier
+                             .width(50.dp)
+                             .height(50.dp)
+                             .clip(RoundedCornerShape(10.dp)),
+                         contentScale = ContentScale.Crop,
+                         contentDescription = "reviews"
+                     )
+                 }
+             }*/
             Column(modifier = Modifier.padding(5.dp)) {
                 Row {
                     Text(text = review.title)
@@ -388,7 +404,6 @@ fun MovieInfoText(title: String, data: String) {
     Column(modifier = Modifier.padding(3.dp)) {
         Text(
             text = title,
-            color = Color.DarkGray,
             style = TextStyle(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold
@@ -397,10 +412,8 @@ fun MovieInfoText(title: String, data: String) {
 
         Text(
             text = data,
-            color = Color.Gray,
             style = TextStyle(
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Medium
+                fontSize = 10.sp
             )
         )
     }
@@ -526,6 +539,7 @@ fun ShowBackArrow(onBackPressed: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ShowMovieDetails(date: String, generes: String, duration: String) {
     val bullet = "\u2022"
@@ -545,14 +559,32 @@ fun ShowMovieDetails(date: String, generes: String, duration: String) {
                 append(bullet)
                 append("\t")
                 append(generes)
-                append("\t")
-                append(bullet)
-                append("\t")
-                append(duration)
             }
         },
         modifier = textModifier,
     )
+
+    Row(
+        modifier = Modifier
+            .padding(5.dp)
+            .border(
+                border = ButtonDefaults.outlinedButtonBorder,
+                shape = RoundedCornerShape(4.dp),
+
+            )
+            .padding(5.dp)
+    ) {
+        Image(
+            painterResource(Res.drawable.ic_duration),
+            "movie duration",
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+        Text(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            text = duration,
+            )
+    }
+
 }
 
 fun Int.toMeaningfulDuration(): String {

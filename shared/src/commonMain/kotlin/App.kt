@@ -7,14 +7,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import decompose.MovieBuffRoot
 import kotlinx.coroutines.*
 import moviebuff.shared.generated.resources.Res
 import moviebuff.shared.generated.resources.menu_top_icon
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import style.MovieBuffTheme
@@ -25,32 +23,33 @@ import ui.features.UserImageArea
 
 
 @Composable
-fun App(root: MovieBuffRoot) {
-        MovieBuffTheme {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                val scope = rememberCoroutineScope()
-                ModalNavigationDrawer(
-                    drawerState = drawerState,
-                    drawerContent = {
-                        ModalDrawerSheet {
-                            AppDrawer()
-                        }
+fun App(root: MovieBuffRoot, isWeb: Boolean = false) {
+    MovieBuffTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+            val scope = rememberCoroutineScope()
+            ModalNavigationDrawer(
+                drawerState = drawerState,
+                drawerContent = {
+                    ModalDrawerSheet {
+                        AppDrawer()
                     }
-                ) {
-                    AppScaffoldContent(
-                        root,
-                        onHamburgerClicked = {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        }
-                    )
                 }
+            ) {
+                AppScaffoldContent(
+                    root,
+                    onHamburgerClicked = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    },
+                    isWeb
+                )
             }
         }
+    }
 }
 
 @Composable
@@ -71,12 +70,13 @@ fun AppDrawer() {
 @Composable
 fun AppScaffoldContent(
     root: MovieBuffRoot,
-    onHamburgerClicked: () -> Unit
+    onHamburgerClicked: () -> Unit,
+    isWeb: Boolean
 ) {
 
-    var backArrowVisibilityState by remember { mutableStateOf(false) }
+    val backArrowVisibilityState by remember { mutableStateOf(false) }
     var bottomBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
-    var topBarVisibilityState by remember { mutableStateOf(true) }
+    val topBarVisibilityState by remember { mutableStateOf(true) }
     Scaffold(
         topBar = {
             SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState)
@@ -86,26 +86,47 @@ fun AppScaffoldContent(
         }*/
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues).background(Color.LightGray)
+            modifier = Modifier.padding(paddingValues)
         ) {
-            Children(root.childStack) {
-                when (val child = it.instance) {
-                    is MovieBuffRoot.Child.MainScreen -> {
-                        backArrowVisibilityState = false
-                        topBarVisibilityState = true
-                        MovieList(child.mainScreenComponent)
-                    }
-
-                    is MovieBuffRoot.Child.DetailScreen -> {
-                        backArrowVisibilityState = true
-                        topBarVisibilityState = false
-                        MovieDetailsScreen(child.detailsScreenComponent)
-                    }
-                }
+            if (isWeb) {
+                ShowWebLayout(root)
+            } else {
+                //ShowMobileLayout(root, backArrowVisibilityState, topBarVisibilityState)
+                ShowMobileLayout(root, backArrowVisibilityState, topBarVisibilityState)
             }
 
         }
     }
+}
+
+@Composable
+private fun ShowMobileLayout(
+    root: MovieBuffRoot,
+    backArrowVisibilityState: Boolean,
+    topBarVisibilityState: Boolean
+) {
+    var localBackArrowVisibilityState = backArrowVisibilityState
+    var localTopBarVisibilityState = topBarVisibilityState
+    Children(root.childStack) {
+        when (val child = it.instance) {
+            is MovieBuffRoot.Child.MainScreen -> {
+                localBackArrowVisibilityState = false
+                localTopBarVisibilityState = true
+                MovieList(child.mainScreenComponent)
+            }
+
+            is MovieBuffRoot.Child.DetailScreen -> {
+                localBackArrowVisibilityState = true
+                localTopBarVisibilityState = false
+                MovieDetailsScreen(child.detailsScreenComponent)
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowWebLayout(root: MovieBuffRoot) {
+    TODO("Not yet implemented")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
