@@ -4,7 +4,7 @@ import shared
 struct ComposeView: UIViewControllerRepresentable {
     private var lifeCycleHolder:LifeCycleHolder {LifeCycleHolder()}
     func makeUIViewController(context: Context) -> UIViewController {
-        Main_iosKt.MainViewController(lifecycle:lifeCycleHolder.lifecycle)
+        Main_iosKt.MainViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
