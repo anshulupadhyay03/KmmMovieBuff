@@ -22,8 +22,15 @@ import ui.features.MovieList
 import ui.features.UserImageArea
 
 
+data class MovieBuffConfiguration(
+    var isWeb: Boolean = false
+)
+
+var LocalAppConfiguration = compositionLocalOf { MovieBuffConfiguration() }
+
 @Composable
 fun App(root: MovieBuffRoot, isWeb: Boolean = false) {
+    LocalAppConfiguration  = compositionLocalOf { MovieBuffConfiguration(isWeb) }
     MovieBuffTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -44,8 +51,7 @@ fun App(root: MovieBuffRoot, isWeb: Boolean = false) {
                         scope.launch {
                             drawerState.open()
                         }
-                    },
-                    isWeb
+                    }
                 )
             }
         }
@@ -70,31 +76,25 @@ fun AppDrawer() {
 @Composable
 fun AppScaffoldContent(
     root: MovieBuffRoot,
-    onHamburgerClicked: () -> Unit,
-    isWeb: Boolean
+    onHamburgerClicked: () -> Unit
 ) {
-
     val backArrowVisibilityState by remember { mutableStateOf(false) }
     var bottomBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
     val topBarVisibilityState by remember { mutableStateOf(true) }
-    Scaffold(
-        topBar = {
-            SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState)
-        },
-        /*bottomBar = {
-            SetupBottomBar(navController, bottomBarVisibilityState)
-        }*/
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            if (isWeb) {
-                ShowWebLayout(root)
-            } else {
-                //ShowMobileLayout(root, backArrowVisibilityState, topBarVisibilityState)
+    CompositionLocalProvider(LocalAppConfiguration provides MovieBuffConfiguration() ){
+        Scaffold(
+            topBar = {
+                SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState)
+            },
+            /*bottomBar = {
+                SetupBottomBar(navController, bottomBarVisibilityState)
+            }*/
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier.padding(paddingValues)
+            ) {
                 ShowMobileLayout(root, backArrowVisibilityState, topBarVisibilityState)
             }
-
         }
     }
 }
@@ -112,6 +112,7 @@ private fun ShowMobileLayout(
             is MovieBuffRoot.Child.MainScreen -> {
                 localBackArrowVisibilityState = false
                 localTopBarVisibilityState = true
+
                 MovieList(child.mainScreenComponent)
             }
 
@@ -126,7 +127,7 @@ private fun ShowMobileLayout(
 
 @Composable
 fun ShowWebLayout(root: MovieBuffRoot) {
-    TODO("Not yet implemented")
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

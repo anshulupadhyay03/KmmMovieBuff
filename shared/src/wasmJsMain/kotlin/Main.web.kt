@@ -6,13 +6,12 @@ import com.arkivanov.essenty.lifecycle.resume
 import decompose.MovieBuffRootImpl
 
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val lifecycle = LifecycleRegistry()
     lifecycle.resume()
     val root = MovieBuffRootImpl(DefaultComponentContext(lifecycle = lifecycle))
     CanvasBasedWindow(title = "movieBuff", canvasElementId = "movieBuff"){
-        App(root)
+        App(root,true)
     }
 }
