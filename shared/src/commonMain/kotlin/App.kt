@@ -30,7 +30,7 @@ var LocalAppConfiguration = compositionLocalOf { MovieBuffConfiguration() }
 
 @Composable
 fun App(root: MovieBuffRoot, isWeb: Boolean = false) {
-    LocalAppConfiguration  = compositionLocalOf { MovieBuffConfiguration(isWeb) }
+
     MovieBuffTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -45,14 +45,16 @@ fun App(root: MovieBuffRoot, isWeb: Boolean = false) {
                     }
                 }
             ) {
-                AppScaffoldContent(
-                    root,
-                    onHamburgerClicked = {
-                        scope.launch {
-                            drawerState.open()
+                CompositionLocalProvider(LocalAppConfiguration provides MovieBuffConfiguration(isWeb)) {
+                    AppScaffoldContent(
+                        root,
+                        onHamburgerClicked = {
+                            scope.launch {
+                                drawerState.open()
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }
@@ -81,20 +83,18 @@ fun AppScaffoldContent(
     val backArrowVisibilityState by remember { mutableStateOf(false) }
     var bottomBarVisibilityState by rememberSaveable { (mutableStateOf(true)) }
     val topBarVisibilityState by remember { mutableStateOf(true) }
-    CompositionLocalProvider(LocalAppConfiguration provides MovieBuffConfiguration() ){
-        Scaffold(
-            topBar = {
-                SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState)
-            },
-            /*bottomBar = {
-                SetupBottomBar(navController, bottomBarVisibilityState)
-            }*/
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier.padding(paddingValues)
-            ) {
-                ShowMobileLayout(root, backArrowVisibilityState, topBarVisibilityState)
-            }
+    Scaffold(
+        topBar = {
+            SetupTopBar(onHamburgerClicked, topBarVisibilityState, backArrowVisibilityState)
+        },
+        /*bottomBar = {
+            SetupBottomBar(navController, bottomBarVisibilityState)
+        }*/
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            ShowMobileLayout(root, backArrowVisibilityState, topBarVisibilityState)
         }
     }
 }
@@ -105,6 +105,7 @@ private fun ShowMobileLayout(
     backArrowVisibilityState: Boolean,
     topBarVisibilityState: Boolean
 ) {
+
     var localBackArrowVisibilityState = backArrowVisibilityState
     var localTopBarVisibilityState = topBarVisibilityState
     Children(root.childStack) {
@@ -188,8 +189,7 @@ private fun ShowMainContent(paddingValues: PaddingValues, navController: NavHost
     }
 }*/
 
-/*
-@Composable
+/*@Composable
 fun SetupBottomBar(bottomBarVisibilityState: Boolean) {
     AnimatedVisibility(
         visible = bottomBarVisibilityState,
@@ -227,5 +227,4 @@ fun SetupBottomBar(bottomBarVisibilityState: Boolean) {
                 )
             }
         }
-    }
-*/
+    }*/

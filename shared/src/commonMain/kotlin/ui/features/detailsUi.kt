@@ -1,5 +1,6 @@
 package ui.features
 
+import LocalAppConfiguration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.slideInVertically
@@ -25,7 +26,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,15 +38,14 @@ import moviebuff.shared.generated.resources.Res
 import moviebuff.shared.generated.resources.arrow_back
 import moviebuff.shared.generated.resources.ic_duration
 import moviebuff.shared.generated.resources.star
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.Resource
 import org.jetbrains.compose.resources.painterResource
-import style.MovieBuffTheme
+import ui.features.web.ShowWebDetailsLayout
 
 
 @Composable
 fun MovieDetailsScreen(component: DetailsScreenComponent) {
+
     val movieDetailState by component.viewModel.movieDetailsState.collectAsState()
     Column(
         modifier = Modifier
@@ -198,6 +197,18 @@ fun AddTitleAndDivider(sectionTitle: String) {
 
 @Composable
 fun ShowMovieDetails(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> Unit) {
+    if (LocalAppConfiguration.current.isWeb) {
+        ShowWebDetailsLayout(movieDetailsModel, onBackPressed)
+    } else {
+        ShowMobileDetailsLayout(movieDetailsModel, onBackPressed)
+    }
+}
+
+@Composable
+private fun ShowMobileDetailsLayout(
+    movieDetailsModel: MovieDetailsModel,
+    onBackPressed: () -> Unit
+) {
     ShowImages(movieDetailsModel, onBackPressed)
     HorizontalDivider()
     ShowOverview(movieDetailsModel.overview, movieDetailsModel.vote)
@@ -346,8 +357,8 @@ fun ShowReviewCards(review: MovieReview) {
                         modifier = Modifier
                             .padding(start = 7.dp)
                             .background(
-                                MaterialTheme.colorScheme.secondary,
-                                RoundedCornerShape(10.dp)
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = RoundedCornerShape(10.dp)
                             )
                             .padding(2.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -444,6 +455,20 @@ private fun ShowOverview(overview: String, vote: Double) {
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun ShowBackArrow(onBackPressed: () -> Unit) {
+    IconButton(
+        onClick = {
+            onBackPressed.invoke()
+        }) {
+        Icon(
+            painterResource(Res.drawable.arrow_back),
+            contentDescription = null
+        )
+    }
+}
+
 @Composable
 private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> Unit) {
     Box(
@@ -527,20 +552,6 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun ShowBackArrow(onBackPressed: () -> Unit) {
-    IconButton(
-        onClick = {
-            onBackPressed.invoke()
-        }) {
-        Icon(
-            painterResource(Res.drawable.arrow_back),
-            contentDescription = null
-        )
-    }
-}
-
-@OptIn(ExperimentalResourceApi::class)
-@Composable
 fun ShowMovieDetails(date: String, generes: String, duration: String) {
     val bullet = "\u2022"
     val paragraphStyle = ParagraphStyle(
@@ -548,6 +559,7 @@ fun ShowMovieDetails(date: String, generes: String, duration: String) {
     )
     val textModifier = Modifier
         .fillMaxWidth()
+        .padding(5.dp)
 
     Text(
         buildAnnotatedString {
@@ -555,24 +567,23 @@ fun ShowMovieDetails(date: String, generes: String, duration: String) {
                 style = paragraphStyle
             ) {
                 append(date)
-                append("\t")
                 append(bullet)
-                append("\t")
                 append(generes)
             }
         },
+        fontSize = 20.sp,
         modifier = textModifier,
     )
 
     Row(
         modifier = Modifier
-            .padding(5.dp)
+            .padding(2.dp)
             .border(
                 border = ButtonDefaults.outlinedButtonBorder,
                 shape = RoundedCornerShape(4.dp),
 
-            )
-            .padding(5.dp)
+                )
+            .padding(2.dp)
     ) {
         Image(
             painterResource(Res.drawable.ic_duration),
@@ -580,9 +591,10 @@ fun ShowMovieDetails(date: String, generes: String, duration: String) {
             modifier = Modifier.align(Alignment.CenterVertically)
         )
         Text(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically).padding(start = 2.dp),
             text = duration,
-            )
+            fontSize = 14.sp
+        )
     }
 
 }

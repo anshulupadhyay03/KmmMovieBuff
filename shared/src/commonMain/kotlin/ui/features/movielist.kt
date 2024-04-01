@@ -39,10 +39,8 @@ fun MovieList(mainScreenComponent: MainScreenComponent) {
     if (LocalAppConfiguration.current.isWeb) {
         ShowGalleryLayout(mainScreenComponent)
     } else {
-        //ShowList(mainScreenComponent)
-        ShowGalleryLayout(mainScreenComponent)
+        ShowList(mainScreenComponent)
     }
-
 }
 
 @Composable
@@ -151,13 +149,13 @@ fun MovieGalleryRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
                     )
                     onDrawWithContent {
                         drawContent()
-                        val dotSize = size.width / 8f
+                        val dotSize = size.width / 14f
                         drawCircle(
                             Color.Black,
                             radius = dotSize,
                             center = Offset(
                                 x = size.width - dotSize - 20,
-                                y = (size.height - dotSize) + 20
+                                y = size.height - dotSize - 20
                             ),
                             blendMode = BlendMode.Darken
                         )
@@ -165,7 +163,7 @@ fun MovieGalleryRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
                             ratingBarColors.highlightColor, radius = dotSize * 0.8f,
                             center = Offset(
                                 x = size.width - dotSize - 20,
-                                y = (size.height - dotSize) + 20
+                                y = size.height - dotSize - 20
                             )
                         )
                         drawText(
@@ -174,11 +172,11 @@ fun MovieGalleryRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
                             style = TextStyle(
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 9.sp
+                                fontSize = 12.sp
                             ),
                             topLeft = Offset(
-                                x = size.width - dotSize - 20,
-                                y = size.height - dotSize - 20
+                                x = size.width - dotSize - 40,
+                                y = size.height - dotSize - 35
                             )
                         )
                     }
@@ -187,11 +185,9 @@ fun MovieGalleryRow(item: MovieResult, onItemClick: (id: Int) -> Unit) {
                 contentDescription = null,
             )
             Text(
+                modifier = Modifier.padding(10.dp),
                 text = item.title,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                fontWeight = FontWeight.Bold
             )
         }
     }
