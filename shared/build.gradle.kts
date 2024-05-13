@@ -1,24 +1,58 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+
 plugins {
-    kotlin("multiplatform")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
     kotlin("native.cocoapods")
-    id("com.android.library")
-    id("org.jetbrains.compose")
     kotlin("plugin.serialization") version "1.9.22"
     id("kotlin-parcelize")
     //id("com.codingfeline.buildkonfig") version "+"
 }
 
 kotlin {
-    android {
+    androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "MovieBuff"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "MovieBuff.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    open = mapOf(
+                        "app" to mapOf(
+                            "name" to "google chrome dev"
+                        )
+                    )
+                }
+            }
+        }
+        binaries.executable()
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+       browser()
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+        }
+    }
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -30,10 +64,11 @@ kotlin {
             baseName = "shared"
             isStatic=true
             export(libs.arkivanov.decompose)
+            export(libs.essenty.lifecycle)
             transitiveExport = true
         }
     }
-    
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -43,13 +78,16 @@ kotlin {
                 implementation(compose.ui)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation ("io.github.oleksandrbalan:textflow:1.1.0")
+               // implementation ("io.github.oleksandrbalan:textflow:1.1.0")
 
 
                 implementation(libs.kotlinx.coroutines.core)
 
                 //Image downloading
-                api(libs.image.loading)
+                implementation(libs.coil.mp)
+                implementation(libs.coil.compose)
+                implementation(libs.coil.compose.core)
+                implementation(libs.coil.network.ktor)
 
                 // Ktor
                 implementation(libs.ktor.client.core)
@@ -59,6 +97,7 @@ kotlin {
 
                 //di,navigation,lifecycle
                 api(libs.arkivanov.decompose)
+                implementation(libs.essenty.lifecycle)
                 implementation(libs.arkivanov.jetbrains.uiext)
 
                 //kotlin date&time
@@ -70,19 +109,16 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting {
-            dependencies {
-                api(libs.kotlinx.coroutines.android)
+         androidMain.dependencies{
+             implementation(libs.kotlinx.coroutines.android)
 
-                // Android
-                api(libs.androidx.activity.compose)
-                api(libs.androidx.appcompat)
-                api(libs.androidx.core.ktx)
+             // Android
+             implementation(libs.androidx.activity.compose)
+             implementation(libs.androidx.appcompat)
+             implementation(libs.androidx.core.ktx)
 
-                // Ktor
-                api(libs.ktor.client.okhttp)
-
-            }
+             // Ktor
+             implementation(libs.ktor.client.okhttp)
         }
         val androidUnitTest by getting
         val iosX64Main by getting
@@ -107,6 +143,12 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
+
+        val wasmJsMain by getting{
+            dependencies {
+                implementation(libs.ktor.client.web)
+            }
+        }
     }
 }
 
@@ -119,14 +161,19 @@ android {
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
+        //applicationId = "com.retroent.moviebuff.android"
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
+       // versionCode = 1
+      //  versionName = "1.0"
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        jvmToolchain(11)
-    }
+}
+
+compose.experimental {
+    web.application {}
 }

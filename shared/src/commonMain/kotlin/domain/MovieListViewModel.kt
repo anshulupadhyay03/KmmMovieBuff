@@ -26,6 +26,7 @@ class MovieListViewModel(
     }
 
     fun onItemClicked(movieId: Int) {
+        print("item clicked-$movieId")
         onMovieSelected(movieId)
     }
 

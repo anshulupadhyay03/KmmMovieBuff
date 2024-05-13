@@ -4,10 +4,11 @@ import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import decompose.MovieBuffRoot
 import decompose.MovieBuffRootImpl
+import platform.UIKit.UIViewController
 
-fun MainViewController(lifecycle: LifecycleRegistry) = ComposeUIViewController {
-    CompositionLocalProvider(){
-        val root = MovieBuffRootImpl(DefaultComponentContext(lifecycle = lifecycle))
+fun MainViewController(): UIViewController {
+    val root = MovieBuffRootImpl(DefaultComponentContext(lifecycle = LifecycleRegistry()))
+    return ComposeUIViewController {
         App(root)
     }
 }
