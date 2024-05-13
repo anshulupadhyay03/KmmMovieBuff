@@ -4,14 +4,38 @@ import LocalAppConfiguration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material3.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,19 +48,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil3.compose.AsyncImagePainter
+import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.size.Size
 import decompose.DetailsScreenComponent
-import domain.*
+import domain.MovieCast
+import domain.MovieDetailsModel
+import domain.MovieDetailsUiState
+import domain.MovieInfo
+import domain.MovieReview
 import moviebuff.shared.generated.resources.Res
 import moviebuff.shared.generated.resources.arrow_back
 import moviebuff.shared.generated.resources.ic_duration
+import moviebuff.shared.generated.resources.reviewer_avtar
 import moviebuff.shared.generated.resources.star
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -95,26 +133,21 @@ fun ShowCasts(casts: List<MovieCast>) {
                 ) {
 
                     val painterResource =
-                        rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${it.avatarPath}")
+                        rememberAsyncImagePainter(
+                            ImageRequest.Builder(LocalPlatformContext.current)
+                                .data("https://image.tmdb.org/t/p/original${it.avatarPath}")
+                                .size(Size.ORIGINAL)
+                                .build()
+                        )
 
-                    Image(
-                        painter = painterResource,
-                        modifier = Modifier
-                            .width(80.dp)
-                            .height(100.dp)
-                            .clip(RectangleShape)
-                            .border(2.dp, color = Color.DarkGray),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "reviews"
-                    )
 
-                    /* when(painterResource.requestState){
-                         is ImageRequestState.Loading -> {
+                     when(painterResource.state){
+                         is AsyncImagePainter.State.Loading -> {
                              CircularProgressIndicator()
                          }
-                         is ImageRequestState.Failure -> {
+                         is AsyncImagePainter.State.Error -> {
                              Image(
-                                 painter = painterResource("reviewer_avtar.png"),
+                                 painter = painterResource(Res.drawable.reviewer_avtar),
                                  modifier = Modifier
                                      .width(80.dp)
                                      .height(100.dp)
@@ -124,7 +157,7 @@ fun ShowCasts(casts: List<MovieCast>) {
                                  contentDescription = "reviews"
                              )
                          }
-                         is ImageRequestState.Success -> {
+                         is AsyncImagePainter.State.Success -> {
                              Image(
                                  painter = painterResource,
                                  modifier = Modifier
@@ -136,7 +169,9 @@ fun ShowCasts(casts: List<MovieCast>) {
                                  contentDescription = "reviews"
                              )
                          }
-                     }*/
+
+                         else -> {}
+                     }
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -173,7 +208,7 @@ private fun ShowHeaderText(title: String) {
 
 @Composable
 fun ShowKeyWords(keywords: List<String>) {
-    AddTitleAndDivider("Tags")
+    AddTitleAndDivider("Keywords")
     Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
         keywords.forEach { word ->
             println("word : $word")
@@ -310,46 +345,27 @@ fun ShowReviewCards(review: MovieReview) {
         Row {
 
             val painterResource =
-                rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${review.avatarPath}")
+                rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalPlatformContext.current)
+                        .data("https://image.tmdb.org/t/p/original${review.avatarPath}")
+                        .size(Size.ORIGINAL)
+                        .build()
 
-            Image(
-                painter = painterResource,
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop,
-                contentDescription = "reviews"
-            )
+                )
 
-            /* when(painterResource.requestState){
-                 is ImageRequestState.Loading -> {
-                     CircularProgressIndicator()
-                 }
-                 is ImageRequestState.Failure -> {
-                     Image(
-                         painter = painterResource("reviewer_avtar.png"),
-                         modifier = Modifier
-                             .width(50.dp)
-                             .height(50.dp)
-                             .clip(RoundedCornerShape(10.dp))
-                             .border(2.dp,Color.LightGray),
-                         contentScale = ContentScale.Crop,
-                         contentDescription = "reviews"
-                     )
-                 }
-                 is ImageRequestState.Success -> {
-                     Image(
-                         painter = painterResource,
-                         modifier = Modifier
-                             .width(50.dp)
-                             .height(50.dp)
-                             .clip(RoundedCornerShape(10.dp)),
-                         contentScale = ContentScale.Crop,
-                         contentDescription = "reviews"
-                     )
-                 }
-             }*/
+            if(painterResource.state is AsyncImagePainter.State.Loading){
+                CircularProgressIndicator()
+            }else {
+                Image(
+                    painter = painterResource,
+                    modifier = Modifier
+                        .width(50.dp)
+                        .height(50.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "reviews"
+                )
+            }
             Column(modifier = Modifier.padding(5.dp)) {
                 Row {
                     Text(text = review.title)
@@ -482,17 +498,33 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -
         }
 
         val painterResource =
-            rememberAsyncImagePainter("https://image.tmdb.org/t/p/original${movieDetailsModel.backDropImage}")
+            rememberAsyncImagePainter(
+                ImageRequest.Builder(LocalPlatformContext.current)
+                    .data("https://image.tmdb.org/t/p/original${movieDetailsModel.backDropImage}")
+                    .size(Size.ORIGINAL)
+                    .build()
+            )
 
-        Image(
-            painter = painterResource,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .alpha(0.3f),
-            contentScale = ContentScale.Crop,
-            contentDescription = "movieImages"
-        )
+        when(painterResource.state){
+            is AsyncImagePainter.State.Loading->{
+                CircularProgressIndicator()
+            }
+
+            is AsyncImagePainter.State.Success ->{
+                Image(
+                    painter = painterResource,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .alpha(0.3f),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "movieImages"
+                )
+            }
+            else -> {}
+        }
+
+
         Row(
             modifier = Modifier
                 .padding(top = 50.dp)

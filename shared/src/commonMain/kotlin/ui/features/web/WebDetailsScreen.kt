@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,20 +13,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.InputChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -43,13 +40,8 @@ import androidx.compose.ui.zIndex
 import coil3.compose.rememberAsyncImagePainter
 import domain.MovieDetailsModel
 import domain.MovieInfo
-import moviebuff.shared.generated.resources.Res
-import moviebuff.shared.generated.resources.ic_duration
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 import ui.features.AddTitleAndDivider
 import ui.features.AddVoteProgressBar
-import ui.features.MovieInfoText
 import ui.features.ShowBackArrow
 import ui.features.ShowCasts
 import ui.features.ShowPostersAndBackDrops
@@ -67,7 +59,7 @@ fun ShowWebDetailsLayout(movieDetailsModel: MovieDetailsModel, onBackPressed: ()
         }
         VerticalDivider(thickness = 2.dp)
         Row(
-            Modifier.weight(1f).padding(end = 2.dp)
+            Modifier.weight(0.5f).padding(end = 2.dp)
         ) {
             ShowMovieInfo(movieDetailsModel.movieInfo, movieDetailsModel.keywords)
         }
@@ -90,23 +82,41 @@ fun ShowMovieInfo(movieInfo: MovieInfo, keywords: List<String>) {
         MovieInfoText("Budget", movieInfo.movieBudget)
 
         MovieInfoText("Revenue", movieInfo.movieRevenue)
-        ShowKeyWords(keywords)
+    }
+}
+
+@Composable
+fun MovieInfoText(title: String, data: String) {
+    Column(modifier = Modifier.padding(3.dp)) {
+        Text(
+            text = title,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
+
+        Text(
+            text = data,
+            style = TextStyle(
+                fontSize = 14.sp
+            )
+        )
     }
 }
 
 @Composable
 fun ShowKeyWords(keywords: List<String>) {
     AddTitleAndDivider("Keywords")
-    LazyHorizontalGrid(
-        modifier = Modifier.heightIn(max = 200.dp), // this is hack please find better solution
-        rows = GridCells.Fixed(3),
-        verticalArrangement = Arrangement.spacedBy(3.dp)
+    Row(modifier = Modifier
+        .horizontalScroll(rememberScrollState())
     ) {
-        items(keywords) {
-            SuggestionChip(
+        keywords.forEach { word ->
+            InputChip(
+                modifier = Modifier.padding(5.dp),
+                selected = false,
                 onClick = {},
-                label = { Text(it) },
-                modifier = Modifier.padding(2.dp)
+                label = { Text(word) }
             )
         }
     }
@@ -115,6 +125,7 @@ fun ShowKeyWords(keywords: List<String>) {
 @Composable
 fun LeftPart(movieDetailsModel: MovieDetailsModel) {
     Column {
+        ShowKeyWords(movieDetailsModel.keywords)
         if (movieDetailsModel.reviews.isNotEmpty()) {
             ShowReviews(movieDetailsModel.reviews)
         }
@@ -124,7 +135,6 @@ fun LeftPart(movieDetailsModel: MovieDetailsModel) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -> Unit) {
     Box(
@@ -187,6 +197,7 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -
             }
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
+                    modifier = Modifier.padding(bottom = 10.dp),
                     text = movieDetailsModel.title,
                     style = TextStyle(
                         fontSize = 24.sp,
@@ -200,14 +211,7 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -
                 )
 
                 Spacer(Modifier.padding(10.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AddVoteProgressBar(movieDetailsModel.vote)
-                    Image(
-                        modifier = Modifier.padding(start = 20.dp),
-                        painter = painterResource(Res.drawable.ic_duration),
-                        contentDescription = null
-                    )
-                }
+                AddVoteProgressBar(movieDetailsModel.vote)
 
                 Spacer(Modifier.padding(10.dp))
                 Text(
@@ -229,8 +233,6 @@ private fun ShowImages(movieDetailsModel: MovieDetailsModel, onBackPressed: () -
 
 }
 
-
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ShowMovieDetails(date: String, generes: String, duration: String) {
     val bullet = "\u2022"

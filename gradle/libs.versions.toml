@@ -1,16 +1,14 @@
 [versions]
 coroutines = "1.7.2"
-ktor = "2.3.0"
 ktor-wasm = "3.0.0-wasm2"
 androidx-activityCompose = "1.8.2"
 androidx-appcompat = "1.6.1"
 androidx-core-ktx = "1.12.0"
-imageLoading = "1.5.2"
 decompose = "3.0.0-alpha07"
 essenty = "2.0.0-alpha07"
 kotlinDateTime = "0.5.0"
 compose = "1.6.1"
-coil = "3.0.0-SNAPSHOT"
+coil3 = "3.0.0-alpha06"
 compose-plugin = "1.6.0-rc03"
 kotlin = "1.9.21"
 agp = "8.2.1"
@@ -44,9 +42,11 @@ arkivanov-decompose = { group = "com.arkivanov.decompose", name = "decompose", v
 arkivanov-jetbrains-uiext = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
 
 #Image downloading
-coil-coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
-coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
-coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

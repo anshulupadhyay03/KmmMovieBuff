@@ -38,7 +38,7 @@ kotlin {
         binaries.executable()
     }
 
-
+    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
        browser()
     }
@@ -84,8 +84,9 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
 
                 //Image downloading
-                implementation(libs.coil.coil)
+                implementation(libs.coil.mp)
                 implementation(libs.coil.compose)
+                implementation(libs.coil.compose.core)
                 implementation(libs.coil.network.ktor)
 
                 // Ktor

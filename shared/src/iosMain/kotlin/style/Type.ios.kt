@@ -6,7 +6,6 @@ import androidx.compose.ui.text.platform.Font
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import okio.buffer
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import platform.Foundation.NSBundle
 
 
@@ -22,6 +21,5 @@ actual fun getTajawalMediumFontFamily(): FontFamily {
 
 private fun loadBytes(path: String): ByteArray {
     val fullPath = NSBundle.mainBundle.resourcePath + "/compose-resources/font/" + path
-    println("Ansh : fullpath : $fullPath")
     return FileSystem.SYSTEM.source(fullPath.toPath()).buffer().readByteArray()
 }
