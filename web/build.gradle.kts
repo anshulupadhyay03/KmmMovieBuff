@@ -11,7 +11,7 @@ kotlin {
         moduleName = "MovieBuff"
         browser {
             commonWebpackConfig {
-                outputFileName = "MovieBuff.js"
+                outputFileName = "moviebuff.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     open = mapOf(
                         "app" to mapOf(
