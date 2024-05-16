@@ -24,4 +24,3 @@ dependencyResolutionManagement {
 rootProject.name = "MovieBuff"
 include(":androidApp")
 include(":shared")
-//include(":web")
