@@ -16,10 +16,15 @@ Once you have got the api key follow the below steps:
  3. choose the platform and hit run
 
 
-## Demo Video
+## Mobile Demo Video
 
 
 https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d-ed3462bc5450
+
+
+## Web Demo Video
+
+
 
 
 ## What's Next
