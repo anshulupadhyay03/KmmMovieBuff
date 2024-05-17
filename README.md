@@ -1,5 +1,5 @@
-## TMBD Movie KMM app for Android and iOS
-This project is the implementation of how one can adopt the Kmp (Kotlin multiplatform) for building Android and ios apps.
+## TMBD Movie KMM app for Android,iOS and Web.
+This project is the implementation of how one can adopt the Kmp (Kotlin multiplatform) for building Android , ios apps and for Web.
 I have used the TMDB's developer apis to fetch the movie-related data. I have used the **Compose Multiplatform** to build the 
 UI of both platforms. If you are new to Compose multiplatform please go through: https://www.jetbrains.com/lp/compose-multiplatform/ 
 
@@ -18,11 +18,12 @@ Once you have got the api key follow the below steps:
 
 ## Mobile Demo Video
 
-
 https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d-ed3462bc5450
 
 
-## Web Demo Video
+## Web Demo
+
+- Run the web project with command : ./gradlew wasmJsBrowserDevelopmentRun 
 
 https://github.com/youranshul/KmmMovieBuff/assets/618667/a432f5cd-2547-4861-a154-16cec189108b
 
@@ -44,7 +45,7 @@ https://github.com/youranshul/KmmMovieBuff/assets/618667/a432f5cd-2547-4861-a154
 - [MVVM/MVI Architecture](https://developer.android.com/jetpack/guide) - Official recommended architecture for building robust, production-quality apps.
 - [Kotlin multiplatform](https://kotlinlang.org/docs/multiplatform-mobile-getting-started.html) - Kotlin-based development for frontend applications for Android,iOS, Web and desktop.
 - [Decompose](https://arkivanov.github.io/Decompose/) - Kotlin Multiplatform library for breaking down your code into lifecycle-aware business logic components (aka BLoC), with routing functionality and pluggable UI (Jetpack Compose, Android Views, SwiftUI, JS React, etc.)
-- [Image Loading](https://github.com/qdsfdhvh/compose-imageloader) - Compose Image library for Kotlin Multiplatform.
+- [Image Loading](https://coil-kt.github.io/coil/upgrading_to_coil3/) - Coil3 Image library for Kotlin Multiplatform.
 - [Async data lading](https://ktor.io/docs/welcome.html) - Ktor is a framework to easily build connected applications – web applications, HTTP services, mobile and browser applications.
 
 For more information about used dependencies, see [this](/gradle/libs.versions.toml) file.
