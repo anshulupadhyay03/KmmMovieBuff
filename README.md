@@ -31,7 +31,6 @@ https://github.com/youranshul/KmmMovieBuff/assets/618667/a432f5cd-2547-4861-a154
 ## What's Next
   - Some more UI improvement
   - Adding Login functionality
-  - Adding the Web support
   - Improving overall Architecture
   - Write some unit test cases
   - Implementing videos from the TMDB APIs
