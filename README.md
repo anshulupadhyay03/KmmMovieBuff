@@ -23,7 +23,7 @@ https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d
 
 ## Web Demo
 
-- Run the web project with command : ./gradlew wasmJsBrowserDevelopmentRun 
+- Run the web project with command : ```./gradlew wasmJsBrowserDevelopmentRun ```
 
 https://github.com/youranshul/KmmMovieBuff/assets/618667/a432f5cd-2547-4861-a154-16cec189108b
 
