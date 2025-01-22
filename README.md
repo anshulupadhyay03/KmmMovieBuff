@@ -15,7 +15,6 @@ Once you have got the api key follow the below steps:
  2. Replace the api key within quotes instead of text <Replace with your tmdb token>
  3. choose the platform and hit run
 
-
 ## Mobile Demo Video
 
 https://github.com/youranshul/KmmMovieBuff/assets/618667/11caca75-5dc7-4cd9-bd3d-ed3462bc5450
